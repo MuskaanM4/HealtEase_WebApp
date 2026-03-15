@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HealthEase - Online Drugstore</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          sans-serif;
+        background-color: #f4f7f7;
+      }
+
+      .he-header {
+        background-color: #c1e3df; /* mintgroen */
+        padding: 1rem 1.5rem;
+      }
+
+      .he-logo {
+        font-weight: 700;
+        color: #0c3b5d; /* donkerblauw */
+      }
+
+      .he-search {
+        border-radius: 999px;
+        border: none;
+        padding-left: 2.5rem;
+      }
+
+      .he-search-wrapper {
+        position: relative;
+        background-color: #e7f4f2;
+        border-radius: 999px;
+      }
+
+      .he-search-wrapper span {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7a8a8a;
+      }
+
+      .he-icon-btn {
+        background-color: #0c3b5d;
+        color: #ffffff;
+        border-radius: 999px;
+        border: none;
+        padding: 0.4rem 0.9rem;
+      }
+
+      .he-hero {
+        background-color: #c1e3df;
+        padding: 3rem 1.5rem;
+      }
+
+      .he-hero-title {
+        font-size: 2.3rem;
+        font-weight: 800;
+        color: #0c3b5d;
+      }
+
+      .he-hero-title span {
+        color: #0077c2;
+      }
+
+      .he-hero-subtitle {
+        color: #1b4c6c;
+        margin-bottom: 1.5rem;
+      }
+
+      .he-primary-btn {
+        background-color: #36b5ff;
+        color: #ffffff;
+        border-radius: 999px;
+        border: 2px solid #0c3b5d;
+        padding: 0.6rem 1.6rem;
+        font-weight: 600;
+      }
+
+      .he-secondary-btn {
+        background-color: #ffffff;
+        color: #0c3b5d;
+        border-radius: 999px;
+        border: 2px solid #0c3b5d;
+        padding: 0.6rem 1.6rem;
+        font-weight: 600;
+      }
+
+      .he-section-title {
+        text-align: center;
+        margin-top: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: #0c3b5d;
+        font-weight: 700;
+      }
+
+      .he-section-subtitle {
+        text-align: center;
+        color: #6c7a7a;
+        margin-bottom: 1.5rem;
+      }
+
+      .he-product-card {
+        background-color: #ffffff;
+        border-radius: 18px;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      }
+
+      .he-product-card img {
+        max-width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 0.75rem;
+      }
+
+      .he-product-name {
+        font-weight: 600;
+        color: #0c3b5d;
+        font-size: 0.95rem;
+      }
+
+      .he-product-price {
+        color: #0077c2;
+        font-weight: 600;
+        margin-top: 0.25rem;
+      }
+
+      .he-footer {
+        background-color: #c1e3df;
+        padding: 2rem 1.5rem;
+        margin-top: 3rem;
+        font-size: 0.9rem;
+        color: #0c3b5d;
+      }
+
+      @media (max-width: 767.98px) {
+        .he-hero {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header / Navbar -->
+    <header class="he-header">
+      <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between gap-3">
+          <a href="index.html" class="text-decoration-none">
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="rounded-circle d-flex align-items-center justify-content-center"
+                style="width: 40px; height: 40px; background-color: #0c3b5d;"
+              >
+                <span class="text-white fw-bold">H</span>
+              </div>
+              <span class="he-logo">HealthEase</span>
+            </div>
+          </a>
+
+          <div class="flex-grow-1 mx-3 d-none d-md-block">
+            <div class="he-search-wrapper">
+              <span class="bi bi-search"></span>
+              <input
+                type="text"
+                class="form-control he-search"
+                placeholder="Search for medicines..."
+              />
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-3">
+            <button
+              class="he-icon-btn position-relative"
+              type="button"
+              onclick="window.location.href='checkout.html'"
+            >
+              <span class="bi bi-cart"></span>
+              <span
+                id="cartCountBadge"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              ></span>
+            </button>
+            <button
+              class="btn btn-outline-dark rounded-circle border-0"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#mainMenu"
+              aria-controls="mainMenu"
+            >
+              <span class="bi bi-list" style="font-size: 1.5rem;"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Offcanvas Sidebar -->
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="mainMenu"
+      aria-labelledby="mainMenuLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mainMenuLabel">Menu</h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body d-flex flex-column gap-2">
+        <a href="index.html" class="btn btn-link text-start">Home</a>
+        <a href="shop.html" class="btn btn-link text-start">Shop</a>
+        <a href="checkout.html" class="btn btn-link text-start">Cart / Checkout</a>
+        <a href="essentials.html" class="btn btn-link text-start">Everyday Essentials</a>
+        <a href="testimonials.html" class="btn btn-link text-start">Testimonials</a>
+        <a href="faq.html" class="btn btn-link text-start">FAQ</a>
+        <a href="contact.html" class="btn btn-link text-start">Contact</a>
+        <a href="login.html" class="btn btn-link text-start">Login / Signup</a>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="he-hero">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-7">
+            <h1 class="he-hero-title">
+              Your trusted <br />
+              <span>Online</span> <br />
+              <span>Drugstore</span> <br />
+              For Every Need
+            </h1>
+            <p class="he-hero-subtitle">
+              Your one-stop pharmacy. Shop smart, live well, feel better.
+            </p>
+            <div class="d-flex gap-3 flex-wrap">
+              <button class="he-primary-btn">Locations</button>
+              <button class="he-secondary-btn">Shop Now</button>
+            </div>
+          </div>
+          <div class="col-md-5 mt-4 mt-md-0 text-center">
+            <div
+              class="rounded-4 p-4"
+              style="
+                background-color: #e7f4f2;
+                min-height: 260px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                color: #0c3b5d;
+              "
+            >
+              <div
+                class="rounded-circle d-flex align-items-center justify-content-center mb-3"
+                style="
+                  width: 96px;
+                  height: 96px;
+                  background-color: #c1e3df;
+                "
+              >
+                <i class="bi bi-file-medical-fill" style="font-size: 2.5rem;"></i>
+              </div>
+              <h5 class="fw-bold mb-1">Safe & Smart Pharmacy</h5>
+              <p class="mb-0" style="font-size: 0.9rem;">
+                Order medicines, track availability and pick up at your
+                favourite drugstore.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Everyday Must-Haves -->
+    <section class="py-4">
+      <div class="container">
+        <h2 class="he-section-title">Everyday Must-Haves</h2>
+        <p class="he-section-subtitle">
+          Essentials you can't live without – loaded live from our database.
+        </p>
+
+        <div id="mustHaveProducts" class="row g-3"></div>
+      </div>
+    </section>
+
+    <!-- Category highlight cards -->
+    <section class="py-4">
+      <div class="container">
+        <h2 class="he-section-title">Shop by Category</h2>
+        <p class="he-section-subtitle">
+          Browse by category and find exactly what you're looking for.
+        </p>
+        <div class="row g-3">
+          <div class="col-6 col-md-3">
+            <div class="he-product-card">
+              <div class="he-product-name mb-2">Maternal wellness &amp; Care</div>
+              <button
+                class="btn btn-sm btn-outline-primary"
+                onclick="window.location.href='shop.html'"
+              >
+                Shop Now
+              </button>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="he-product-card">
+              <div class="he-product-name mb-2">Migraine &amp; head pain relief</div>
+              <button
+                class="btn btn-sm btn-outline-primary"
+                onclick="window.location.href='shop.html'"
+              >
+                Shop Now
+              </button>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="he-product-card">
+              <div class="he-product-name mb-2">Immune Support</div>
+              <button
+                class="btn btn-sm btn-outline-primary"
+                onclick="window.location.href='shop.html'"
+              >
+                Shop Now
+              </button>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="he-product-card">
+              <div class="he-product-name mb-2">Pain &amp; Fever Relief</div>
+              <button
+                class="btn btn-sm btn-outline-primary"
+                onclick="window.location.href='shop.html'"
+              >
+                Shop Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="he-footer">
+      <div class="container">
+        <div class="row gy-3">
+          <div class="col-md-4">
+            <h6 class="fw-bold">HealthEase</h6>
+            <p class="mb-1">
+              Your trusted online drugstore for every need.
+            </p>
+            <p class="mb-0 small">
+              Shop smart, live well, feel better.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h6 class="fw-bold">Jump back to</h6>
+            <ul class="list-unstyled small mb-0">
+              <li><a href="shop.html" class="text-decoration-none">Shop</a></li>
+              <li><a href="essentials.html" class="text-decoration-none">Everyday Must-Haves</a></li>
+              <li><a href="faq.html" class="text-decoration-none">FAQ</a></li>
+              <li><a href="contact.html" class="text-decoration-none">Contact</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h6 class="fw-bold">Find us on</h6>
+            <div class="d-flex gap-2">
+              <span class="bi bi-instagram"></span>
+              <span class="bi bi-facebook"></span>
+            </div>
+            <p class="small mt-2 mb-0">© 2025 HealthEase. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Cart Toast -->
+    <div
+      class="toast align-items-center text-bg-dark border-0 position-fixed bottom-0 end-0 m-3"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      id="cartToast"
+    >
+      <div class="d-flex">
+        <div class="toast-body">
+          Item added to your cart.
+        </div>
+        <div class="me-2 my-auto">
+          <a href="checkout.html" class="btn btn-sm btn-outline-light"
+            >Go to Cart</a
+          >
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+      async function loadMustHaves() {
+        try {
+          const res = await fetch('http://localhost:4000/api/products');
+          const allProducts = await res.json();
+
+          const mustHaves = allProducts.filter(
+            (p) =>
+              p.subCategory === 'Morning Essentials' ||
+              p.subCategory === 'On-the-go' ||
+              p.subCategory === 'Night Care'
+          );
+
+          const container = document.getElementById('mustHaveProducts');
+          container.innerHTML = '';
+
+          if (!mustHaves.length) {
+            container.innerHTML =
+              '<p class="text-center text-muted">No Everyday Must-Haves found in the database.</p>';
+            return;
+          }
+
+          mustHaves.forEach((product) => {
+            const col = document.createElement('div');
+            col.className = 'col-6 col-md-3';
+            col.innerHTML = `
+              <div class="he-product-card">
+                ${
+                  product.imageUrl
+                    ? `<img src="${product.imageUrl}" alt="${product.name}" />`
+                    : ''
+                }
+                <div class="he-product-name">${product.name}</div>
+                <div class="he-product-price">SRD ${Number(
+                  product.price
+                ).toFixed(2)}</div>
+                <button class="btn btn-sm btn-outline-primary mt-2 add-to-cart-btn">Add to cart</button>
+              </div>
+            `;
+            container.appendChild(col);
+
+            const btn = col.querySelector('.add-to-cart-btn');
+            btn.addEventListener('click', () => addToCart(product));
+          });
+        } catch (err) {
+          console.error('Failed to load products', err);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', loadMustHaves);
+    </script>
+  </body>
+  </html>
+

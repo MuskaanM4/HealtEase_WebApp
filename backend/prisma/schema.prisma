@@ -1,0 +1,129 @@
+// Dit gedeelte vertelt Prisma hoe de verbinding met de database werkt
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  PHARMACY
+  ADMIN
+}
+
+// 1. Producten tabel (gebaseerd op 'Everyday Must-Haves' en categorieën)
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?   @db.Text
+  price       Decimal   @db.Decimal(10, 2)
+  category    String    // Bijv: 'Medications', 'Beauty'
+  subCategory String?   // Bijv: 'Morning Essentials', 'Night Care'
+  imageUrl    String?
+  createdAt   DateTime  @default(now())
+
+  stocks      Stock[]
+}
+
+// 2. Bestellingen tabel (gebaseerd op add to cart page.jpg)
+model Order {
+  id               Int      @id @default(autoincrement())
+  customerName     String
+  email            String
+  phone            String
+  deliveryMethod   String   // 'Pick up' of 'Delivery'
+  location         String?  // Gekozen apotheek locatie
+  pickupTime       String?
+
+  // Koppeling naar klant en apotheek
+  userId           Int?
+  user             User?    @relation(fields: [userId], references: [id])
+
+  pharmacyId       Int?
+  pharmacy         Pharmacy? @relation(fields: [pharmacyId], references: [id])
+
+  customerLat      Float?
+  customerLng      Float?
+  distanceKm       Float?
+
+  // Bestandsuploads (recept + ID-kaart)
+  prescriptionPath String
+  idCardPath       String
+  
+  // Prijsberekening uit de mockup + dynamische delivery fee
+  bagTotal         Decimal  @db.Decimal(10, 2)
+  adminFee         Decimal  @default(30.00)
+  platformFee      Decimal  @default(50.00)
+  deliveryFee      Decimal  @default(0.00)
+  totalAmount      Decimal  @db.Decimal(10, 2)
+  
+  createdAt        DateTime @default(now())
+}
+
+// 3. Reviews tabel (gebaseerd op testimonials page.jpg)
+model Review {
+  id        Int      @id @default(autoincrement())
+  author    String
+  comment   String   @db.Text
+  rating    Int      // 1 t/m 5 sterren
+  createdAt DateTime @default(now())
+}
+
+// 4. Contactberichten (gebaseerd op contact page.jpg)
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  location  String?
+  type      String   // 'Consulting' of 'Sponsoring'
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+// 5. Gebruikers (voor login/registratie mockup)
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String   // Wachtwoord (altijd gehasht opslaan!)
+  name      String?
+  role      Role     @default(CUSTOMER)
+  createdAt DateTime @default(now())
+
+  // Relaties
+  pharmacy  Pharmacy?
+  orders    Order[]
+}
+
+// 6. Apotheken (multi-vendor)
+model Pharmacy {
+  id        Int       @id @default(autoincrement())
+  name      String
+  address   String
+  lat       Float
+  lng       Float
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+
+  stocks    Stock[]
+  orders    Order[]
+
+  // optionele koppeling naar een user-account voor login
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    Int?     @unique
+}
+
+// 7. Voorraad per apotheek
+model Stock {
+  id         Int      @id @default(autoincrement())
+  pharmacy   Pharmacy @relation(fields: [pharmacyId], references: [id])
+  pharmacyId Int
+
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+
+  quantity   Int      @default(0)
+}

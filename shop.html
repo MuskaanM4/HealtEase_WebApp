@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HealthEase - Shop</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          sans-serif;
+        background-color: #f4f7f7;
+      }
+
+      .he-header {
+        background-color: #c1e3df;
+        padding: 1rem 1.5rem;
+      }
+
+      .he-logo {
+        font-weight: 700;
+        color: #0c3b5d;
+      }
+
+      .he-search {
+        border-radius: 999px;
+        border: none;
+        padding-left: 2.5rem;
+      }
+
+      .he-search-wrapper {
+        position: relative;
+        background-color: #e7f4f2;
+        border-radius: 999px;
+      }
+
+      .he-search-wrapper span {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7a8a8a;
+      }
+
+      .he-icon-btn {
+        background-color: #0c3b5d;
+        color: #ffffff;
+        border-radius: 999px;
+        border: none;
+        padding: 0.4rem 0.9rem;
+      }
+
+      .he-section-title {
+        text-align: center;
+        margin-top: 2rem;
+        margin-bottom: 0.5rem;
+        color: #0c3b5d;
+        font-weight: 700;
+      }
+
+      .he-section-subtitle {
+        text-align: center;
+        color: #6c7a7a;
+        margin-bottom: 1.5rem;
+      }
+
+      .he-product-card {
+        background-color: #ffffff;
+        border-radius: 18px;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      }
+
+      .he-product-card img {
+        max-width: 100%;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="he-header">
+      <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between gap-3">
+          <a href="index.html" class="text-decoration-none">
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="rounded-circle d-flex align-items-center justify-content-center"
+                style="width: 40px; height: 40px; background-color: #0c3b5d;"
+              >
+                <span class="text-white fw-bold">H</span>
+              </div>
+              <span class="he-logo">HealthEase</span>
+            </div>
+          </a>
+
+          <div class="flex-grow-1 mx-3 d-none d-md-block">
+            <div class="he-search-wrapper">
+              <span class="bi bi-search"></span>
+              <input
+                type="text"
+                id="searchInput"
+                class="form-control he-search"
+                placeholder="Search for medicines..."
+              />
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-3">
+            <button
+              class="he-icon-btn position-relative"
+              type="button"
+              onclick="window.location.href='checkout.html'"
+            >
+              <span class="bi bi-cart"></span>
+              <span
+                id="cartCountBadge"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              ></span>
+            </button>
+            <button
+              class="btn btn-outline-dark rounded-circle border-0"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#mainMenu"
+              aria-controls="mainMenu"
+            >
+              <span class="bi bi-list" style="font-size: 1.5rem;"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Offcanvas Sidebar -->
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="mainMenu"
+      aria-labelledby="mainMenuLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mainMenuLabel">Menu</h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body d-flex flex-column gap-2">
+        <a href="index.html" class="btn btn-link text-start">Home</a>
+        <a href="shop.html" class="btn btn-link text-start">Shop</a>
+        <a href="checkout.html" class="btn btn-link text-start">Cart / Checkout</a>
+        <a href="faq.html" class="btn btn-link text-start">FAQ</a>
+        <a href="contact.html" class="btn btn-link text-start">Contact</a>
+        <a href="login.html" class="btn btn-link text-start">Login&Signup</a>
+        <a href="essentials.html" class="btn btn-link text-start">Essentials</a>
+        <a href="testimonials.html" class="btn btn-link text-start">Testimonials</a>
+      </div>
+    </div>
+
+    <main class="container py-4">
+      <h2 class="he-section-title">Shop by Category</h2>
+      <p class="he-section-subtitle">
+        Browse by category and find exactly what you need.
+      </p>
+
+      <div id="productGrid" class="row g-3"></div>
+    </main>
+
+    <!-- Cart Toast -->
+    <div
+      class="toast align-items-center text-bg-dark border-0 position-fixed bottom-0 end-0 m-3"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      id="cartToast"
+    >
+      <div class="d-flex">
+        <div class="toast-body">
+          Item added to your cart.
+        </div>
+        <div class="me-2 my-auto">
+          <a href="checkout.html" class="btn btn-sm btn-outline-light"
+            >Go to Cart</a
+          >
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+      let allProducts = [];
+
+      async function loadProducts() {
+        try {
+          const res = await fetch('http://localhost:4000/api/products');
+          allProducts = await res.json();
+          renderProducts(allProducts);
+        } catch (err) {
+          console.error('Failed to load products', err);
+        }
+      }
+
+      function renderProducts(list) {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = '';
+        if (!list.length) {
+          grid.innerHTML =
+            '<p class="text-center text-muted">No products found.</p>';
+          return;
+        }
+        list.forEach((product) => {
+          const col = document.createElement('div');
+          col.className = 'col-6 col-md-3';
+          col.innerHTML = `
+            <div class="he-product-card">
+              ${
+                product.imageUrl
+                  ? `<img src="${product.imageUrl}" alt="${product.name}" />`
+                  : ''
+              }
+              <div class="fw-semibold">${product.name}</div>
+              <div class="small text-muted">${product.category}</div>
+              <div class="fw-bold text-primary mt-1">SRD ${Number(
+                product.price
+              ).toFixed(2)}</div>
+              <button class="btn btn-sm btn-outline-primary mt-2 add-to-cart-btn">
+                Add to cart
+              </button>
+            </div>
+          `;
+          grid.appendChild(col);
+          col
+            .querySelector('.add-to-cart-btn')
+            .addEventListener('click', () => addToCart(product));
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        loadProducts();
+
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+          const term = e.target.value.toLowerCase();
+          const filtered = allProducts.filter(
+            (p) =>
+              p.name.toLowerCase().includes(term) ||
+              (p.category || '').toLowerCase().includes(term)
+          );
+          renderProducts(filtered);
+        });
+      });
+    </script>
+  </body>
+  </html>
+
