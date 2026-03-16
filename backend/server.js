@@ -5,10 +5,12 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const { PrismaClient } = require('@prisma/client');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 4000;
+const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_key';
 
 app.use(cors());
 app.use(express.json());
@@ -145,12 +147,28 @@ app.post('/api/auth/login', async (req, res) => {
     if (!user || user.password !== password) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    res.json({ id: user.id, email: user.email, role: user.role });
+    // Sign JWT token
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+    res.json({ id: user.id, email: user.email, role: user.role, token });
   } catch (err) {
     console.error('Login error', err);
     res.status(500).json({ error: 'Login failed' });
   }
 });
+
+// Middleware: authenticate token and attach user to request
+function authenticateToken(req, res, next) {
+  const auth = req.headers['authorization'] || req.headers['Authorization'];
+  if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ error: 'Missing token' });
+  const token = auth.split(' ')[1];
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    req.user = payload;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+}
 
 // Pharmacies basic listing
 app.get('/api/pharmacies', async (req, res) => {
@@ -213,6 +231,46 @@ app.get('/api/orders', async (req, res) => {
   }
 });
 
+// Get orders for a specific user
+app.get('/api/users/:id/orders', authenticateToken, async (req, res) => {
+  const id = Number(req.params.id);
+  if (Number.isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid user id' });
+  }
+  // Only allow the user themselves or admin to access orders
+  if (req.user.role !== 'ADMIN' && Number(req.user.id) !== id) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+  try {
+    const orders = await prisma.order.findMany({
+      where: { userId: id },
+      orderBy: { createdAt: 'desc' },
+      include: { pharmacy: true }
+    });
+    res.json(orders);
+  } catch (err) {
+    console.error('Error fetching user orders', err);
+    res.status(500).json({ error: 'Failed to fetch user orders' });
+  }
+});
+
+// Allow pharmacies or admin to update order status
+app.patch('/api/orders/:id/status', authenticateToken, async (req, res) => {
+  const id = Number(req.params.id);
+  const { status } = req.body;
+  if (Number.isNaN(id) || !status) return res.status(400).json({ error: 'Invalid data' });
+  if (req.user.role !== 'PHARMACY' && req.user.role !== 'ADMIN') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+  try {
+    const order = await prisma.order.update({ where: { id }, data: { status } });
+    res.json(order);
+  } catch (err) {
+    console.error('Error updating order status', err);
+    res.status(500).json({ error: 'Failed to update status' });
+  }
+});
+
 // Update stock quantity for one product in a pharmacy
 app.patch('/api/pharmacies/:id/stock', async (req, res) => {
   const id = Number(req.params.id);
@@ -245,6 +303,7 @@ app.patch('/api/pharmacies/:id/stock', async (req, res) => {
 // Create order with file uploads and distance-based delivery fee
 app.post(
   '/api/orders',
+  authenticateToken,
   upload.fields([
     { name: 'prescription', maxCount: 1 },
     { name: 'idCard', maxCount: 1 }
@@ -305,10 +364,12 @@ app.post(
           });
         }
 
+        // If no pharmacy selected, default to Central Pharmacy
         if (!selectedPharmacy) {
-          return res
-            .status(400)
-            .json({ error: 'Valid pharmacyId is required for delivery' });
+          selectedPharmacy = await prisma.pharmacy.findUnique({ where: { email: 'central@healtease.test' } });
+          if (!selectedPharmacy) {
+            selectedPharmacy = await prisma.pharmacy.findFirst({ where: { name: 'Central Pharmacy' } });
+          }
         }
 
         distanceKm = haversine(lat, lng, selectedPharmacy.lat, selectedPharmacy.lng);
@@ -322,32 +383,52 @@ app.post(
         deliveryFee = Math.max(100, Number(baseFee.toFixed(2)));
       }
 
+      // Ensure we have a pharmacy assigned for both Delivery and Pick up
+      if (!selectedPharmacy) {
+        // Try to resolve from provided pharmacyId (works for Pick up too)
+        if (pharmacyId) {
+          selectedPharmacy = await prisma.pharmacy.findUnique({ where: { id: Number(pharmacyId) } });
+        }
+        // Default to Central Pharmacy if still not found
+        if (!selectedPharmacy) {
+          selectedPharmacy = await prisma.pharmacy.findUnique({ where: { email: 'central@healtease.test' } });
+          if (!selectedPharmacy) {
+            selectedPharmacy = await prisma.pharmacy.findFirst({ where: { name: 'Central Pharmacy' } });
+          }
+        }
+      }
+
       const adminFee = 30.0;
       const platformFee = 50.0;
       const totalAmount =
         bagTotalNumber + adminFee + platformFee + deliveryFee;
 
-      const order = await prisma.order.create({
-        data: {
-          customerName,
-          email,
-          phone,
-          deliveryMethod,
-          location: location || null,
-          pickupTime: pickupTime || null,
-          bagTotal: bagTotalNumber,
-          adminFee,
-          platformFee,
-          deliveryFee,
-          totalAmount,
-          pharmacyId: selectedPharmacy ? selectedPharmacy.id : null,
-          customerLat: customerLat ? Number(customerLat) : null,
-          customerLng: customerLng ? Number(customerLng) : null,
-          distanceKm,
-          prescriptionPath: path.join('uploads', prescriptionFile.filename),
-          idCardPath: path.join('uploads', idCardFile.filename)
-        }
-      });
+      const orderData = {
+        customerName,
+        email,
+        phone,
+        deliveryMethod,
+        location: location || null,
+        pickupTime: pickupTime || null,
+        bagTotal: bagTotalNumber,
+        adminFee,
+        platformFee,
+        deliveryFee,
+        totalAmount,
+        pharmacyId: selectedPharmacy ? selectedPharmacy.id : null,
+        customerLat: customerLat ? Number(customerLat) : null,
+        customerLng: customerLng ? Number(customerLng) : null,
+        distanceKm,
+        prescriptionPath: path.join('uploads', prescriptionFile.filename),
+        idCardPath: path.join('uploads', idCardFile.filename)
+      };
+
+      // Use authenticated user id as order owner (server-side enforcement)
+      if (req.user && req.user.id) {
+        orderData.userId = Number(req.user.id);
+      }
+
+      const order = await prisma.order.create({ data: orderData });
 
       res.status(201).json(order);
     } catch (err) {
@@ -360,6 +441,23 @@ app.post(
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
+});
+
+// Get single order (protected) - user can view their own order, admin can view any
+app.get('/api/orders/:id', authenticateToken, async (req, res) => {
+  const id = Number(req.params.id);
+  if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid order id' });
+  try {
+    const order = await prisma.order.findUnique({ where: { id }, include: { pharmacy: true } });
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+    if (req.user.role !== 'ADMIN' && Number(req.user.id) !== order.userId) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    res.json(order);
+  } catch (err) {
+    console.error('Error fetching order', err);
+    res.status(500).json({ error: 'Failed to fetch order' });
+  }
 });
 
 app.listen(PORT, () => {

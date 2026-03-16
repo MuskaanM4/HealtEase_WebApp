@@ -91,11 +91,12 @@
     <script>
       let currentUser = null;
       let allProducts = [];
+      let currentPharmacyId = null;
 
       function requirePharmacy() {
         const raw = localStorage.getItem('he_user');
         if (!raw) {
-          window.location.href = 'login.html';
+          window.location.href = 'login.html?returnTo=pharmacy-dashboard.html';
           return null;
         }
         const user = JSON.parse(raw);
@@ -108,6 +109,7 @@
 
       function logout() {
         localStorage.removeItem('he_user');
+        localStorage.removeItem('he_token');
         window.location.href = 'index.html';
       }
 
@@ -158,6 +160,7 @@
                 body: JSON.stringify({ productId, quantity })
               }
             );
+            alert('Stock updated');
           }
         });
       }
@@ -181,13 +184,63 @@
         });
       }
 
+      async function tryAutoSelectPharmacy(user) {
+        // fetch pharmacies and try to match by email
+        const res = await fetch('http://localhost:4000/api/pharmacies');
+        const list = await res.json();
+        const match = list.find(p => p.email === user.email);
+        if (match) return match.id;
+        // fallback: if user has pharmacyId property
+        if (user.pharmacyId) return user.pharmacyId;
+        // otherwise default to first
+        return list.length ? list[0].id : null;
+      }
+
       document.addEventListener('DOMContentLoaded', async () => {
         currentUser = requirePharmacy();
         if (!currentUser) return;
-        const pharmacyId = currentUser.id;
+        const token = localStorage.getItem('he_token');
+        const pharmacyId = await tryAutoSelectPharmacy(currentUser);
+        if (!pharmacyId) return alert('No pharmacies found');
+        currentPharmacyId = pharmacyId;
         await loadProducts();
         await loadStock(pharmacyId);
         await loadOrders(pharmacyId);
+
+        // enable order status updates (requires token & PHARMACY role on server)
+        // fetch recent orders and add simple status update controls below table
+        const wrap = document.getElementById('ordersTable').parentElement;
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'mt-3';
+        statusDiv.innerHTML = '<h6>Manage Order Status</h6><div id="ordersManage"></div>';
+        wrap.appendChild(statusDiv);
+        const manageEl = document.getElementById('ordersManage');
+        const ordersRes = await fetch(`http://localhost:4000/api/pharmacies/${pharmacyId}/orders`);
+        const orders = await ordersRes.json();
+        if (!orders.length) { manageEl.innerHTML = '<p class="small text-muted">No orders.</p>'; }
+        orders.forEach(o => {
+          const el = document.createElement('div');
+          el.className = 'd-flex gap-2 align-items-center mb-2';
+          el.innerHTML = `<div class="me-auto">#${o.id} — ${o.customerName} — Status: <strong>${o.status||'PENDING'}</strong></div>`;
+          ['PROCESSING','READY','DELIVERED','CANCELLED'].forEach(s => {
+            const b = document.createElement('button');
+            b.className = 'btn btn-sm btn-outline-secondary';
+            b.textContent = s;
+            b.addEventListener('click', async () => {
+              const tkn = localStorage.getItem('he_token');
+              const r = await fetch(`http://localhost:4000/api/orders/${o.id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type':'application/json', Authorization: 'Bearer ' + tkn },
+                body: JSON.stringify({ status: s })
+              });
+              if (!r.ok) return alert('Failed to update');
+              alert('Updated');
+              await loadOrders(pharmacyId);
+            });
+            el.appendChild(b);
+          });
+          manageEl.appendChild(el);
+        });
       });
     </script>
   </body>

@@ -3,54 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HealthEase - Everyday Essentials</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-    />
+    <title>Shop Everyday Must - Haves</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <style>
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-          sans-serif;
-        background-color: #f4f7f7;
-      }
+      /* Shared header / site styles (copied from shop) */
+      body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background-color: #f4f7f7; }
+      .he-header { background-color: #c1e3df; padding: 1rem 1.5rem; }
+      .he-logo { font-weight: 700; color: #0c3b5d; }
+      .he-search { border-radius: 999px; border: none; padding-left: 2.5rem; }
+      .he-search-wrapper { position: relative; background-color: #e7f4f2; border-radius: 999px; }
+      .he-search-wrapper span { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #7a8a8a; }
+      .he-icon-btn { background-color: #0c3b5d; color: #ffffff; border-radius: 999px; border: none; padding: 0.4rem 0.9rem; }
+      .he-section-title { text-align: center; margin-top: 2rem; margin-bottom: 0.5rem; color: #0c3b5d; font-weight: 700; }
+      .he-section-subtitle { text-align: center; color: #6c7a7a; margin-bottom: 1.5rem; }
 
-      .he-header {
-        background-color: #c1e3df;
-        padding: 1rem 1.5rem;
-      }
+      /* Product / category cards (match shop.html) */
+      .he-product-card { background-color: #ffffff; border-radius: 18px; padding: 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+      .he-product-card img { max-width: 100%; height: 110px; object-fit: cover; border-radius: 12px; margin-bottom: 0.75rem; }
+      .category-card { background: transparent; box-shadow: none; padding: 0.5rem; border-radius: 12px; }
+      .category-box { background-color: #e7f4f2; border-radius: 14px; height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.6rem; }
+      .category-box img { max-height: 120px; width: auto; object-fit: contain; }
+      .product-large .he-product-card { padding: 1.25rem; }
+      .product-large .he-product-card img { height: 200px; border-radius: 12px; }
 
-      .he-logo {
-        font-weight: 700;
-        color: #0c3b5d;
-      }
+      /* Hero mockup cards (top of Essentials page) */
+      .ess-hero { display:flex; gap:36px; justify-content:space-between; align-items:flex-start; margin: 28px 0 18px; }
+      .ess-hero .category-card-hero { flex:1; display:flex; flex-direction:column; align-items:center }
+      .ess-frame { width:100%; height:380px; border-radius:18px; border:6px solid var(--frame); display:flex; align-items:flex-end; justify-content:center; padding-bottom:24px; background:#fff }
+      .ess-hero .category-label { margin-top:18px; font-size:20px }
+      @media (max-width:900px){ .ess-hero{flex-direction:column} .ess-frame{height:260px} }
 
-      .he-icon-btn {
-        background-color: #0c3b5d;
-        color: #ffffff;
-        border-radius: 999px;
-        border: none;
-        padding: 0.4rem 0.9rem;
+      /* Additional essentials-specific styles */
+      :root{--accent:#cfe8e3;--accent-2:#e6f3f0;--frame:#cbe7e2}
+      .topbar{background:var(--accent);padding:14px;border-radius:12px;margin:18px auto;max-width:1100px}
+      .logo{display:flex;align-items:center;gap:12px}
+      .page-wrap{max-width:1100px;margin:18px auto;padding:28px}
+      .hero-title{text-align:center;margin-top:8px}
+      .hero-title h1{font-size:34px;font-weight:700;margin-bottom:6px}
+      .hero-title p{color:#666;margin-bottom:30px}
+      .categories-row{display:flex;gap:36px;justify-content:space-between}
+      .category-card-hero{flex:1;min-width:0;background:transparent;border-radius:18px;padding:20px;display:flex;flex-direction:column;align-items:center}
+      .frame-hero{width:100%;height:360px;border:6px solid var(--frame);border-radius:20px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:28px;background:#fff}
+      .category-label{margin-top:14px;font-size:18px;font-weight:600;color:#111}
+      .icon-wrap{width:180px;height:180px;display:flex;align-items:center;justify-content:center}
+      /* Icon color variables for variety */
+      :root{
+        --icon-color-0:#FFD54F;
+        --icon-color-1:#66C2A5;
+        --icon-color-2:#8FA3FF;
+        --icon-color-3:#F6A86B;
+        --icon-color-4:#A3D39C;
+        --icon-color-5:#F4C6E0;
       }
-
-      .he-hero {
-        background-color: #c1e3df;
-        padding: 2.5rem 1.5rem;
-      }
-
-      .he-card-frame {
-        border-radius: 24px;
-        border: 3px solid #c1e3df;
-        background-color: #fdfefe;
-        min-height: 180px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+      @media (max-width:900px){ .categories-row{flex-direction:column;gap:22px} .frame-hero{height:260px} }
     </style>
   </head>
   <body>
@@ -114,56 +120,218 @@
       </div>
       <div class="offcanvas-body d-flex flex-column gap-2">
         <a href="index.html" class="btn btn-link text-start">Home</a>
-        <a href="shop.html" class="btn btn-link text-start">Shop</a>
         <a href="checkout.html" class="btn btn-link text-start">Cart / Checkout</a>
-        <a href="faq.html" class="btn btn-link text-start">FAQ</a>
-        <a href="contact.html" class="btn btn-link text-start">Contact</a>
-        <a href="login.html" class="btn btn-link text-start">Login&Signup</a>
-        <a href="essentials.html" class="btn btn-link text-start">Essentials</a>
+        <a href="shop.html" class="btn btn-link text-start">Shop</a>
+        <a href="essentials.html" class="btn btn-link text-start">Everyday Essentials</a>
         <a href="testimonials.html" class="btn btn-link text-start">Testimonials</a>
+        <a href="faq.html" class="btn btn-link text-start">FAQ</a>
+        <a href="contact.html" class="btn btn-link text-start">Contact Us</a>
+        <a href="login.html" class="btn btn-link text-start">Login / Signup</a>
+        <a href="account.html" class="btn btn-link text-start">My Account</a>
       </div>
     </div>
 
-    <section class="he-hero">
-      <div class="container">
-        <h2 class="mb-1" style="color: #0c3b5d; font-weight: 700;">
-          Shop Everyday Must-Haves
-        </h2>
-        <p class="text-muted mb-4">
-          Essentials you can't live without – from pain relief to personal care,
-          everything you need for your daily routine.
-        </p>
+      <!-- Cart Toast -->
+      <div
+        class="toast align-items-center text-bg-dark border-0 position-fixed bottom-0 end-0 m-3"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        id="cartToast"
+      >
+        <div class="d-flex">
+          <div class="toast-body">
+            Item added to your cart.
+          </div>
+          <div class="me-2 my-auto">
+            <a href="checkout.html" class="btn btn-sm btn-outline-light">Go to Cart</a>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
 
-        <div class="row g-3 mb-4">
-          <div class="col-md-4">
-            <div class="he-card-frame text-center">
-              <div>
-                <i class="bi bi-sun-fill" style="font-size: 2.2rem;"></i>
-                <h5 class="mt-3">Morning Essentials</h5>
+      
+      <script>
+        const categories = [
+          { name: 'Morning Essentials', icon: 'bi-sun-fill' },
+          { name: 'On-the-go', icon: 'bi-person-walking' },
+          { name: 'Night Care', icon: 'bi-moon-stars-fill' },
+          { name: 'Travel Kit', icon: 'bi-suitcase-fill' },
+          { name: 'Office Care', icon: 'bi-briefcase-fill' },
+          { name: 'Sports', icon: 'bi-bicycle' }
+        ];
+
+        let allProducts = [];
+        let currentShownList = [];
+        let currentModalProduct = null;
+
+        function renderCategories() {
+          const grid = document.getElementById('categoriesGrid');
+          grid.innerHTML = '';
+
+          // Create large mockup-style cards for each category (3 per row)
+          categories.forEach((c, idx) => {
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-4 mb-3';
+            col.innerHTML = `
+              <div class="category-card-hero" style="cursor:pointer;">
+                <div class="ess-frame">
+                  <div class="icon-wrap"><i class="${c.icon}" style="font-size:120px;color:var(--icon-color-${idx % 6});"></i></div>
+                </div>
+                <div class="category-label">${c.name}</div>
+              </div>
+            `;
+            col.querySelector('.category-card-hero').addEventListener('click', () => {
+              const filtered = allProducts.filter((p) => (p.subCategory || '').toLowerCase() === c.name.toLowerCase());
+              showProductsFor(c.name, filtered);
+            });
+            grid.appendChild(col);
+          });
+        }
+
+        function showProductsFor(name, list) {
+          document.getElementById('categoriesGrid').style.display = 'none';
+          document.getElementById('categoryViewHeader').style.display = 'flex';
+          document.getElementById('categoryViewTitle').textContent = name;
+          const left = document.getElementById('categoryViewLeft');
+          left.innerHTML = '';
+          const backBtn = document.createElement('button');
+          backBtn.id = 'backToCategories';
+          backBtn.className = 'btn btn-sm btn-outline-secondary';
+          backBtn.innerHTML = '&larr; Terug';
+          backBtn.addEventListener('click', () => showCategories());
+          left.appendChild(backBtn);
+          document.getElementById('productGrid').classList.add('product-large');
+          renderProducts(list);
+        }
+
+        function showCategories() {
+          document.getElementById('categoriesGrid').style.display = '';
+          document.getElementById('categoryViewHeader').style.display = 'none';
+          document.getElementById('categoryViewTitle').textContent = '';
+          const grid = document.getElementById('productGrid');
+          grid.innerHTML = '';
+          grid.classList.remove('product-large');
+          const left = document.getElementById('categoryViewLeft');
+          if (left) left.innerHTML = '';
+        }
+
+        async function loadProducts() {
+          try {
+            const res = await fetch('http://localhost:4000/api/products');
+            allProducts = await res.json();
+            renderCategories();
+            const grid = document.getElementById('productGrid');
+            if (grid) grid.innerHTML = '';
+          } catch (err) {
+            console.error('Failed to load products', err);
+          }
+        }
+
+        function openProductModal(product) {
+          currentModalProduct = product;
+          document.getElementById('productModalLabel').textContent = product.name;
+          document.getElementById('modalProductName').textContent = product.name;
+          document.getElementById('modalProductCategory').textContent = product.category + (product.subCategory ? ' • ' + product.subCategory : '');
+          document.getElementById('modalProductDescription').textContent = product.description || 'Geen omschrijving beschikbaar.';
+          document.getElementById('modalProductPrice').textContent = 'SRD ' + Number(product.price).toFixed(2);
+          const wrap = document.getElementById('modalImageWrap');
+          wrap.innerHTML = product.imageUrl ? `<img src="${product.imageUrl}" class="img-fluid rounded-2" alt="${product.name}" />` : '';
+          const modalEl = document.getElementById('productModal');
+          const bs = new bootstrap.Modal(modalEl);
+          bs.show();
+        }
+
+        function renderProducts(list) {
+          currentShownList = list;
+          const grid = document.getElementById('productGrid');
+          grid.innerHTML = '';
+          if (!list || !list.length) {
+            grid.innerHTML = '<p class="text-center text-muted">No products found.</p>';
+            return;
+          }
+          list.forEach((product) => {
+            const col = document.createElement('div');
+            const inCategoryView = document.getElementById('categoryViewHeader').style.display !== 'none';
+            col.className = inCategoryView ? 'col-12 col-md-4' : 'col-6 col-md-3';
+            col.innerHTML = `
+              <div class="he-product-card">
+                ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" />` : ''}
+                <div class="fw-semibold">${product.name}</div>
+                <div class="small text-muted">${product.category || ''}</div>
+                <div class="fw-bold text-primary mt-1">SRD ${Number(product.price).toFixed(2)}</div>
+                <div class="d-flex justify-content-between mt-2">
+                  <button class="btn btn-sm btn-outline-primary add-to-cart-btn">Add to cart</button>
+                  <button class="btn btn-sm btn-outline-secondary more-info-btn">Meer info</button>
+                </div>
+              </div>
+            `;
+            grid.appendChild(col);
+            col.querySelector('.add-to-cart-btn').addEventListener('click', () => addToCart(product));
+            col.querySelector('.more-info-btn').addEventListener('click', () => openProductModal(product));
+          });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            // show larger product cards by default on Essentials to match mockup
+            const pg = document.getElementById('productGrid');
+            if (pg) pg.classList.add('product-large');
+
+            // no hero click handlers (categoriesGrid renders large mockup-style cards)
+
+          document.getElementById('modalAddToCart').addEventListener('click', () => {
+            if (currentModalProduct) {
+              addToCart(currentModalProduct);
+              const modal = bootstrap.Modal.getInstance(document.getElementById('productModal'));
+              if (modal) modal.hide();
+            }
+          });
+        });
+      </script>
+    <main class="container py-4">
+      <h2 class="he-section-title">Everyday Essentials</h2>
+      <p class="he-section-subtitle">Tap a collection to view items.</p>
+
+      <div id="categoriesGrid" class="row g-3 mb-4"></div>
+
+      <div id="categoryViewHeader" class="d-flex justify-content-between align-items-center mb-3" style="display:none">
+        <div id="categoryViewLeft"></div>
+        <div>
+          <h4 id="categoryViewTitle" class="mb-0"></h4>
+        </div>
+        <div></div>
+      </div>
+
+      <div id="productGrid" class="row g-3"></div>
+    </main>
+
+    <!-- Product detail modal --> 
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="productModalLabel">Product</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-5" id="modalImageWrap"></div>
+              <div class="col-md-7">
+                <h5 id="modalProductName"></h5>
+                <p id="modalProductCategory" class="text-muted small"></p>
+                <p id="modalProductDescription"></p>
+                <div class="fw-bold text-primary" id="modalProductPrice"></div>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="he-card-frame text-center">
-              <div>
-                <i class="bi bi-person-walking" style="font-size: 2.2rem;"></i>
-                <h5 class="mt-3">On-the-go</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="he-card-frame text-center">
-              <div>
-                <i class="bi bi-moon-stars-fill" style="font-size: 2.2rem;"></i>
-                <h5 class="mt-3">Night Care</h5>
-              </div>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="modalAddToCart">Add to cart</button>
           </div>
         </div>
-
-        <div id="essentialsGrid" class="row g-3"></div>
       </div>
-    </section>
+    </div>
 
     <!-- Cart Toast -->
     <div
@@ -193,56 +361,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
-    <script>
-      async function loadEssentials() {
-        try {
-          const res = await fetch('http://localhost:4000/api/products');
-          const all = await res.json();
-          const essentials = all.filter(
-            (p) =>
-              p.subCategory === 'Morning Essentials' ||
-              p.subCategory === 'On-the-go' ||
-              p.subCategory === 'Night Care'
-          );
-          const grid = document.getElementById('essentialsGrid');
-          grid.innerHTML = '';
-          if (!essentials.length) {
-            grid.innerHTML =
-              '<p class="text-muted">No Everyday Must-Haves found.</p>';
-            return;
-          }
-          essentials.forEach((product) => {
-            const col = document.createElement('div');
-            col.className = 'col-6 col-md-3';
-            col.innerHTML = `
-              <div class="bg-white rounded-4 p-2 h-100 text-center shadow-sm">
-                ${
-                  product.imageUrl
-                    ? `<img src="${product.imageUrl}" alt="${product.name}" class="img-fluid rounded-3 mb-2" style="height:110px;object-fit:cover;" />`
-                    : ''
-                }
-                <div class="fw-semibold small">${product.name}</div>
-                <div class="small text-muted">${product.subCategory || ''}</div>
-                <div class="fw-bold text-primary mt-1">SRD ${Number(
-                  product.price
-                ).toFixed(2)}</div>
-                <button class="btn btn-sm btn-outline-primary mt-2 add-to-cart-btn">
-                  Add to cart
-                </button>
-              </div>
-            `;
-            grid.appendChild(col);
-            col
-              .querySelector('.add-to-cart-btn')
-              .addEventListener('click', () => addToCart(product));
-          });
-        } catch (err) {
-          console.error(err);
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', loadEssentials);
-    </script>
-  </body>
+    <script src="shared/navbar.js"></script>
+    </body>
   </html>
 

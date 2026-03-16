@@ -4,352 +4,159 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HealthEase - Checkout</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin=""
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-          sans-serif;
-        background-color: #f4f7f7;
-      }
-
-      .he-page {
-        background-color: #c1e3df;
-        margin: 1.5rem;
-        border-radius: 18px;
-        padding: 1.5rem;
-      }
-
-      .he-card {
-        background-color: #c1e3df;
-        border-radius: 18px;
-        padding: 1.5rem;
-      }
-
-      .he-panel {
-        background-color: #e7f4f2;
-        border-radius: 18px;
-        padding: 1.5rem;
-      }
-
-      .he-title {
-        font-weight: 700;
-        color: #0c3b5d;
-      }
-
-      .he-pill-toggle button {
-        border-radius: 999px;
-        padding: 0.5rem 1.5rem;
-        border: 2px solid #0c3b5d;
-        background-color: #e7f4f2;
-        color: #0c3b5d;
-        font-weight: 600;
-      }
-
-      .he-pill-toggle button.active {
-        background-color: #36b5ff;
-        color: #ffffff;
-      }
-
-      .he-place-order {
-        background-color: #36b5ff;
-        color: #ffffff;
-        border-radius: 999px;
-        border: none;
-        padding: 0.7rem 1.8rem;
-        font-weight: 700;
-        width: 100%;
-      }
-
-      .he-summary-footer {
-        background-color: #e7f4f2;
-        border-radius: 18px;
-        padding: 0.9rem 1.5rem;
-        margin-top: 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: 700;
-        color: #0c3b5d;
-      }
-
-      #map {
-        width: 100%;
-        height: 220px;
-        border-radius: 18px;
-        margin-top: 0.5rem;
-      }
+      body { font-family: system-ui, -apple-system, sans-serif; background-color: #f4f7f7; color: #0c3b5d; }
+      .he-header { background-color: #c1e3df; padding: 1rem 1.5rem; }
+      .he-logo { font-weight: 700; color: #0c3b5d; }
+      .he-page { padding: 5rem; }
+      .he-panel { background-color: #e7f4f2; border-radius: 18px; padding: 2.5rem; height: 100%; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+      .he-title { font-size: 1.75rem; font-weight: 700; color: #0c3b5d; margin-bottom: 2rem; }
+      .he-pill-toggle button { border-radius: 999px; padding: 0.5rem 1.5rem; border: 2px solid #0c3b5d; background-color: #ffffff; color: #0c3b5d; font-weight: 600; }
+      .he-pill-toggle button.active { background-color: #36b5ff; color: #ffffff; border-color: #36b5ff; }
+      .he-place-order { background-color: #36b5ff; color: #ffffff; border-radius: 999px; border: none; padding: 0.8rem; font-weight: 700; width: 100%; transition: 0.3s; }
+      .he-place-order:disabled { background-color: #ccc; cursor: not-allowed; }
+      .he-summary-footer { background-color: #ffffff; border-radius: 12px; padding: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; font-weight: 700; }
+      #map { width: 100%; height: 250px; border-radius: 12px; margin-top: 10px; border: 1px solid #ddd; }
+      .he-search-wrapper { position: relative; background-color: #ffffff; border-radius: 999px; }
+      .he-search { border-radius: 999px; border: none; padding-left: 2.5rem; }
+      .he-search-wrapper span { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #7a8a8a; }
+      .he-icon-btn { background-color: #0c3b5d; color: white; border-radius: 999px; border: none; padding: 0.5rem 1rem; }
     </style>
   </head>
-  <body>
-    <!-- Shared Navbar -->
+<body>
+
     <header class="he-header">
       <div class="container-fluid">
         <div class="d-flex align-items-center justify-content-between gap-3">
-          <a href="index.html" class="text-decoration-none">
-            <div class="d-flex align-items-center gap-2">
-              <div
-                class="rounded-circle d-flex align-items-center justify-content-center"
-                style="width: 40px; height: 40px; background-color: #0c3b5d;"
-              >
-                <span class="text-white fw-bold">H</span>
-              </div>
-              <span class="he-logo">HealthEase</span>
+          <a href="index.html" class="text-decoration-none d-flex align-items-center gap-2">
+            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background-color: var(--he-dark-blue);">
             </div>
+            <span class="he-logo fs-4">HealthEase</span>
           </a>
 
           <div class="flex-grow-1 mx-3 d-none d-md-block">
             <div class="he-search-wrapper">
               <span class="bi bi-search"></span>
-              <input
-                type="text"
-                class="form-control he-search"
-                placeholder="Search for medicines..."
-              />
+              <input type="text" class="form-control he-search" placeholder="Search for medicines..." />
             </div>
           </div>
 
           <div class="d-flex align-items-center gap-3">
-            <button
-              class="he-icon-btn position-relative"
-              type="button"
-              onclick="window.location.href='checkout.html'"
-            >
-              <span class="bi bi-cart"></span>
-              <span
-                id="cartCountBadge"
-                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              ></span>
+            <button class="he-icon-btn position-relative" onclick="window.location.href='checkout.html'">
+              <i class="bi bi-cart"></i>
+              <span id="cartCountBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display:none;">0</span>
             </button>
-            <button
-              class="btn btn-outline-dark rounded-circle border-0"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#mainMenu"
-              aria-controls="mainMenu"
-            >
-              <span class="bi bi-list" style="font-size: 1.5rem;"></span>
+            <button class="btn btn-outline-dark border-0" data-bs-toggle="offcanvas" data-bs-target="#mainMenu">
+              <i class="bi bi-list fs-2"></i>
             </button>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- Offcanvas Sidebar -->
-    <div
-      class="offcanvas offcanvas-end"
-      tabindex="-1"
-      id="mainMenu"
-      aria-labelledby="mainMenuLabel"
-    >
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="mainMenuLabel">Menu</h5>
-        <button
-          type="button"
-          class="btn-close text-reset"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mainMenu">
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
       </div>
-      <div class="offcanvas-body d-flex flex-column gap-2">
+      <div class="offcanvas-body">
+        <div class="d-grid gap-2">
         <a href="index.html" class="btn btn-link text-start">Home</a>
-        <a href="shop.html" class="btn btn-link text-start">Shop</a>
         <a href="checkout.html" class="btn btn-link text-start">Cart / Checkout</a>
-        <a href="faq.html" class="btn btn-link text-start">FAQ</a>
-        <a href="contact.html" class="btn btn-link text-start">Contact</a>
-        <a href="login.html" class="btn btn-link text-start">Login&Signup</a>
-        <a href="essentials.html" class="btn btn-link text-start">Essentials</a>
+        <a href="shop.html" class="btn btn-link text-start">Shop</a>
+        <a href="essentials.html" class="btn btn-link text-start">Everyday Essentials</a>
         <a href="testimonials.html" class="btn btn-link text-start">Testimonials</a>
+        <a href="faq.html" class="btn btn-link text-start">FAQ</a>
+        <a href="contact.html" class="btn btn-link text-start">Contact Us</a>
+        <a href="login.html" class="btn btn-link text-start">Login / Signup</a>
+        <a href="account.html" class="btn btn-link text-start">My Account</a>
+        </div>
       </div>
     </div>
 
-    <div class="he-page">
-      <div class="row g-3">
-        <!-- Price Details -->
-        <div class="col-lg-4">
-          <div class="he-panel h-100">
-            <h4 class="he-title mb-3">Price Details</h4>
-            <p class="mb-2 fw-semibold">Items in the cart</p>
-            <div id="cartItems" class="mb-3"></div>
+    <main class="he-page">
+      <div class="container-fluid px-md-5">
+        <div class="row g-4">
+          <div class="col-lg-5">
+            <div class="he-panel">
+              <h4 class="he-title">Order Summary</h4>
+              <div id="cartItems" class="mb-3"></div>
+              <hr>
+              <div class="small d-grid gap-2">
+                <div class="d-flex justify-content-between"><span>Bag Total</span><span id="bagTotalText">SRD 0.00</span></div>
+                <div class="d-flex justify-content-between"><span>Admin Fee</span><span>SRD 30</span></div>
+                <div class="d-flex justify-content-between"><span>Platform Fee</span><span>SRD 50</span></div>
+                <div class="d-flex justify-content-between fw-bold"><span>Delivery</span><span id="deliveryFeeText">SRD 0</span></div>
+              </div>
+              <div class="he-summary-footer">
+                <span>Total Amount</span>
+                <span id="totalAmountText">SRD 0.00</span>
+              </div>
+            </div>
+          </div>
 
-            <p class="mt-4 mb-2 fw-semibold">Order Details</p>
-            <div class="d-flex justify-content-between">
-              <span>Bag Total</span>
-              <span id="bagTotalText">SRD 0.00</span>
-            </div>
-            <div class="d-flex justify-content-between">
-              <span>Administratie Fee</span>
-              <span>SRD 30</span>
-            </div>
-            <div class="d-flex justify-content-between">
-              <span>Platform Fee</span>
-              <span>SRD 50</span>
-            </div>
-            <div class="d-flex justify-content-between">
-              <span>Delivery (Based on Location)</span>
-              <span id="deliveryFeeText">SRD 0</span>
-            </div>
+          <div class="col-lg-7">
+            <div class="he-panel">
+              <h4 class="he-title">Checkout Details</h4>
+              
+              <div class="mb-4">
+                <label class="form-label fw-bold">Shipping Information</label>
+                <div class="he-pill-toggle d-flex gap-2">
+                  <button id="pickUpBtn" type="button" class="active">Pick up</button>
+                  <button id="deliveryBtn" type="button">Delivery</button>
+                </div>
+              </div>
 
-            <div class="he-summary-footer">
-              <span id="totalAmountText">SRD 0.00</span>
-              <span>Total</span>
+              <form id="checkoutForm" class="row g-3">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" name="fullName" placeholder="Full Name" required />
+                </div>
+                <div class="col-md-6">
+                  <input type="email" class="form-control" name="email" placeholder="E-mail" required />
+                </div>
+                
+                <div class="col-12 mt-4">
+                  <label class="form-label fw-bold">Select Pharmacy & Location</label>
+                  <select id="pharmacySelect" class="form-select mb-3">
+                    <option value="">Choose a pharmacy...</option>
+                  </select>
+                  <div id="map"></div>
+                  <div class="mt-3">
+                    <button type="button" id="useMyLocationBtn" class="btn btn-outline-primary btn-sm">
+                      <i class="bi bi-geo-alt"></i> Gebruik mijn exacte locatie
+                    </button>
+                  </div>
+                  <div class="mt-2 small">
+                    <span class="fw-bold">Selected:</span> <span id="selectedPharmacyLabel" class="text-muted">None</span>
+                    <input type="hidden" name="pharmacyId" id="pharmacyIdInput" />
+                  </div>
+                </div>
+
+                <div class="col-md-6 mt-4">
+                  <label class="form-label fw-bold">Prescription (Required)</label>
+                  <input type="file" id="prescriptionInput" class="form-control" required />
+                </div>
+                <div class="col-md-6 mt-4">
+                  <label class="form-label fw-bold">ID Card (Required)</label>
+                  <input type="file" id="idCardInput" class="form-control" required />
+                </div>
+
+                <div class="col-12 mt-4">
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="termsCheck" required />
+                    <label class="form-check-label small" for="termsCheck">I agree to the terms and conditions</label>
+                  </div>
+                  <button type="submit" id="placeOrderBtn" class="he-place-order" disabled>Place Order</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-
-        <!-- Checkout Details -->
-        <div class="col-lg-8">
-          <div class="he-panel h-100">
-            <h4 class="he-title mb-3">Checkout Details</h4>
-
-            <p class="fw-semibold">Shipping Information</p>
-            <div class="he-pill-toggle d-flex gap-3 mb-3">
-              <button id="pickUpBtn" type="button" class="active">
-                Pick up
-              </button>
-              <button id="deliveryBtn" type="button">Delivery</button>
-            </div>
-
-            <form id="checkoutForm" class="row g-3">
-              <div class="col-md-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  name="fullName"
-                  placeholder="Full Name"
-                  required
-                />
-              </div>
-              <div class="col-md-6">
-                <input
-                  type="email"
-                  class="form-control"
-                  name="email"
-                  placeholder="E-mail"
-                  required
-                />
-              </div>
-              <div class="col-md-6">
-                <input
-                  type="tel"
-                  class="form-control"
-                  name="phone"
-                  placeholder="Phone Number"
-                  required
-                />
-              </div>
-              <div class="col-md-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  name="location"
-                  placeholder="Drugstore Location"
-                />
-              </div>
-              <div class="col-md-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  name="pickupTime"
-                  placeholder="Pick up time"
-                />
-              </div>
-              <div class="col-12">
-                <label class="form-label fw-semibold">Your Location (for delivery)</label>
-                <div id="map"></div>
-                <small class="text-muted d-block mt-1">
-                  Click on the map to set your location. We'll automatically
-                  pick the nearest pharmacy with stock.
-                </small>
-                <div class="mt-1">
-                  <span class="fw-semibold">Selected pharmacy:</span>
-                  <span id="selectedPharmacyLabel" class="text-muted"
-                    >None</span
-                  >
-                </div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">Prescription (required)</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  id="prescriptionInput"
-                  accept="image/*,.pdf"
-                  required
-                />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label fw-semibold">ID Card (required)</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  id="idCardInput"
-                  accept="image/*,.pdf"
-                  required
-                />
-              </div>
-              <div class="col-12 mt-3">
-                <button type="submit" id="placeOrderBtn" class="he-place-order" disabled>
-                  Place Order
-                </button>
-              </div>
-              <div class="col-12 mt-2">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="termsCheck"
-                    required
-                  />
-                  <label class="form-check-label" for="termsCheck">
-                    I have read the terms and agreements
-                  </label>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
       </div>
-    </div>
-
-    <!-- Cart Toast (shared style) -->
-    <div
-      class="toast align-items-center text-bg-dark border-0 position-fixed bottom-0 end-0 m-3"
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-      id="cartToast"
-    >
-      <div class="d-flex">
-        <div class="toast-body">
-          Item added to your cart.
-        </div>
-        <div class="me-2 my-auto">
-          <a href="checkout.html" class="btn btn-sm btn-outline-light"
-            >Go to Cart</a
-          >
-        </div>
-        <button
-          type="button"
-          class="btn-close btn-close-white me-2 m-auto"
-          data-bs-dismiss="toast"
-          aria-label="Close"
-        ></button>
-      </div>
-    </div>
+    </main>
 
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -358,6 +165,7 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
+    <script src="shared/navbar.js"></script>
     <script>
       const ADMIN_FEE = 30;
       const PLATFORM_FEE = 50;
@@ -405,6 +213,76 @@
         updateTotals();
       }
 
+      // restore checkout state after returning from login
+      (function tryRestoreCheckoutState() {
+        const raw = sessionStorage.getItem('checkout_state');
+        if (!raw) return;
+        try {
+          const s = JSON.parse(raw);
+          if (s.deliveryMethod) {
+            deliveryMethod = s.deliveryMethod;
+            if (deliveryMethod === 'Delivery') {
+              document.getElementById('deliveryBtn').classList.add('active');
+              document.getElementById('pickUpBtn').classList.remove('active');
+            } else {
+              document.getElementById('pickUpBtn').classList.add('active');
+              document.getElementById('deliveryBtn').classList.remove('active');
+            }
+          }
+          if (s.customerLat && s.customerLng) {
+            customerLat = s.customerLat;
+            customerLng = s.customerLng;
+            // place marker when map is ready
+            setTimeout(() => {
+              if (window.heMap) {
+                const latlng = L.latLng(customerLat, customerLng);
+                if (window.heMarker) window.heMarker.setLatLng(latlng);
+                else window.heMarker = L.marker(latlng).addTo(window.heMap);
+                pickNearestPharmacy();
+                updateTotals();
+                updatePlaceOrderEnabled();
+              }
+            }, 600);
+          }
+          if (s.selectedPharmacyId) {
+            // ensure pharmacies loaded and set selected
+            setTimeout(() => {
+              const ph = pharmacies.find(p => p.id === Number(s.selectedPharmacyId));
+              if (ph) {
+                selectedPharmacy = ph;
+                distanceKm = haversine(customerLat, customerLng, ph.lat, ph.lng);
+                document.getElementById('selectedPharmacyLabel').textContent = `${ph.name} (${distanceKm.toFixed(1)} km)`;
+                const pid = document.getElementById('pharmacyIdInput');
+                if (pid) pid.value = ph.id;
+                updateTotals();
+                updatePlaceOrderEnabled();
+              }
+            }, 800);
+          }
+        } catch (e) {
+          console.warn('Could not restore checkout state', e);
+        }
+        sessionStorage.removeItem('checkout_state');
+      })();
+
+      // If user just logged in, show guidance banner (can't restore file inputs)
+      (function showPostLoginGuidance() {
+        if (sessionStorage.getItem('justLoggedIn')) {
+          const token = localStorage.getItem('he_token');
+          const banner = document.createElement('div');
+          banner.className = 'alert alert-info';
+          banner.style.maxWidth = '900px';
+          banner.style.margin = '1rem auto';
+          if (token) {
+            banner.innerHTML = '<strong>Welcome back.</strong> Your login succeeded. Please re-attach your prescription and ID card, then click "Place Order" to complete the checkout.';
+          } else {
+            banner.innerHTML = '<strong>Notice:</strong> Login completed but no token was saved — please log in again.';
+          }
+          document.querySelector('.he-page').parentElement.insertBefore(banner, document.querySelector('.he-page'));
+          sessionStorage.removeItem('justLoggedIn');
+        }
+      })();
+
       function updateTotals() {
         const bagTotalText = document.getElementById('bagTotalText');
         const deliveryFeeText = document.getElementById('deliveryFeeText');
@@ -443,7 +321,9 @@
         const prescription = document.getElementById('prescriptionInput').files[0];
         const idCard = document.getElementById('idCardInput').files[0];
         const needsLocation =
-          deliveryMethod === 'Delivery' ? customerLat != null && selectedPharmacy : true;
+          deliveryMethod === 'Delivery'
+            ? customerLat != null && selectedPharmacy
+            : selectedPharmacy != null;
 
         btn.disabled = !(
           bagTotal > 0 &&
@@ -467,6 +347,23 @@
             return;
           }
 
+          // Require logged-in user before placing order
+          const user = JSON.parse(localStorage.getItem('he_user') || 'null');
+          if (!user || !user.id) {
+            // redirect to login with a returnTo param
+            // save current checkout state so it can be restored after login
+            const url = new URL(window.location.href);
+            const state = {
+              deliveryMethod,
+              customerLat,
+              customerLng,
+              selectedPharmacyId: selectedPharmacy ? selectedPharmacy.id : null
+            };
+            sessionStorage.setItem('checkout_state', JSON.stringify(state));
+            window.location.href = `login.html?returnTo=${encodeURIComponent(url.pathname)}`;
+            return;
+          }
+
           const form = e.target;
           const fd = new FormData();
           fd.append('customerName', form.fullName.value);
@@ -477,16 +374,23 @@
           fd.append('deliveryMethod', deliveryMethod);
           fd.append('bagTotal', Number(bagTotal.toFixed(2)));
 
-          if (deliveryMethod === 'Delivery') {
-            if (!selectedPharmacy || customerLat == null || customerLng == null) {
-              alert(
-                'Please click on the map so we can pick the nearest pharmacy for delivery.'
-              );
-              return;
-            }
-            fd.append('pharmacyId', selectedPharmacy.id);
+          // Ensure a pharmacy is selected (either from dropdown or map)
+          if (!selectedPharmacy) {
+            alert('Please choose a pharmacy from the dropdown or pick a location on the map.');
+            return;
+          }
+          fd.append('pharmacyId', selectedPharmacy.id);
+          if (customerLat != null && customerLng != null) {
             fd.append('customerLat', customerLat);
             fd.append('customerLng', customerLng);
+          }
+
+          // Server uses authenticated user from the JWT token; ensure token present
+          const token = localStorage.getItem('he_token');
+          if (!token) {
+            const url = new URL(window.location.href);
+            window.location.href = `login.html?returnTo=${encodeURIComponent(url.pathname)}`;
+            return;
           }
 
           const prescriptionFile =
@@ -502,11 +406,24 @@
           try {
             const res = await fetch('http://localhost:4000/api/orders', {
               method: 'POST',
+              headers: { Authorization: 'Bearer ' + token },
               body: fd
             });
 
             if (!res.ok) {
               const errorData = await res.json().catch(() => ({}));
+              // If 401, save state and redirect to login so user can re-auth
+              if (res.status === 401) {
+                const state = {
+                  deliveryMethod,
+                  customerLat,
+                  customerLng,
+                  selectedPharmacyId: selectedPharmacy ? selectedPharmacy.id : null
+                };
+                sessionStorage.setItem('checkout_state', JSON.stringify(state));
+                window.location.href = `login.html?returnTo=${encodeURIComponent(window.location.pathname)}`;
+                return;
+              }
               throw new Error(errorData.error || 'Failed to place order');
             }
 
@@ -524,64 +441,97 @@
         try {
           const res = await fetch('http://localhost:4000/api/pharmacies');
           pharmacies = await res.json();
+          // populate select
+          const sel = document.getElementById('pharmacySelect');
+          if (sel) {
+            sel.innerHTML = '<option value="">Choose a pharmacy...</option>' +
+              pharmacies.map(p => `<option value="${p.id}">${p.name} — ${p.address}</option>`).join('');
+            sel.addEventListener('change', () => {
+              const v = sel.value;
+              const pid = document.getElementById('pharmacyIdInput');
+              if (v) {
+                const id = Number(v);
+                const chosen = pharmacies.find(x => x.id === id);
+                selectedPharmacy = chosen || null;
+                if (pid) pid.value = v;
+                if (chosen && customerLat != null) {
+                  distanceKm = haversine(customerLat, customerLng, chosen.lat, chosen.lng);
+                  document.getElementById('selectedPharmacyLabel').textContent = `${chosen.name} (${distanceKm.toFixed(1)} km)`;
+                } else if (chosen) {
+                  document.getElementById('selectedPharmacyLabel').textContent = `${chosen.name}`;
+                }
+              } else {
+                selectedPharmacy = null;
+                if (pid) pid.value = '';
+                document.getElementById('selectedPharmacyLabel').textContent = 'None';
+              }
+              updateTotals();
+              updatePlaceOrderEnabled();
+            });
+          }
         } catch (err) {
           console.error('Failed to load pharmacies', err);
         }
       }
 
       function initMap() {
-        const map = L.map('map').setView([5.852, -55.203], 12);
+        window.heMap = L.map('map').setView([5.852, -55.203], 12);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+        }).addTo(window.heMap);
 
-        let marker = null;
+        window.heMarker = null;
 
-        map.on('click', (e) => {
+        window.heMap.on('click', (e) => {
           customerLat = e.latlng.lat;
           customerLng = e.latlng.lng;
 
-          if (marker) {
-            marker.setLatLng(e.latlng);
+          if (window.heMarker) {
+            window.heMarker.setLatLng(e.latlng);
           } else {
-            marker = L.marker(e.latlng).addTo(map);
+            window.heMarker = L.marker(e.latlng).addTo(window.heMap);
           }
 
-          if (pharmacies.length) {
-            let best = null;
-            let bestDistance = Infinity;
-            pharmacies.forEach((p) => {
-              const d = haversine(
-                customerLat,
-                customerLng,
-                p.lat,
-                p.lng
-              );
-              if (d < bestDistance) {
-                bestDistance = d;
-                best = p;
-              }
-            });
-
-            if (best) {
-              distanceKm = bestDistance;
-              selectedPharmacy = best;
-              document.getElementById(
-                'selectedPharmacyLabel'
-              ).textContent = `${best.name} (${distanceKm.toFixed(1)} km)`;
-              if (distanceKm > 15) {
-                alert(
-                  'Selected pharmacy is more than 15km away. Delivery is not available.'
-                );
-              }
-            }
-          }
+          pickNearestPharmacy();
 
           updateTotals();
           updatePlaceOrderEnabled();
         });
+
+        // show pharmacy markers
+        if (pharmacies.length) {
+          pharmacies.forEach((p) => {
+            L.marker([p.lat, p.lng]).addTo(window.heMap).bindPopup(`<strong>${p.name}</strong><br/>${p.address}`);
+          });
+        }
+      }
+
+      function pickNearestPharmacy() {
+        if (!pharmacies.length || customerLat == null) return;
+        let best = null;
+        let bestDistance = Infinity;
+        pharmacies.forEach((p) => {
+          const d = haversine(customerLat, customerLng, p.lat, p.lng);
+          if (d < bestDistance) {
+            bestDistance = d;
+            best = p;
+          }
+        });
+
+        if (best) {
+          distanceKm = bestDistance;
+          selectedPharmacy = best;
+          document.getElementById('selectedPharmacyLabel').textContent = `${best.name} (${distanceKm.toFixed(1)} km)`;
+          const pid = document.getElementById('pharmacyIdInput');
+          if (pid) pid.value = best.id;
+          const sel = document.getElementById('pharmacySelect');
+          if (sel) sel.value = best.id;
+          if (distanceKm > 15) {
+            alert('Selected pharmacy is more than 15km away. Delivery is not available.');
+          }
+        }
       }
 
       function haversine(lat1, lon1, lat2, lon2) {
@@ -605,6 +555,44 @@
         renderCartFromStorage();
         await loadPharmacies();
         initMap();
+
+        const locBtn = document.getElementById('useMyLocationBtn');
+        if (locBtn) {
+          locBtn.addEventListener('click', () => {
+            if (!navigator.geolocation) {
+              alert('Geolocation is not available in your browser.');
+              return;
+            }
+            locBtn.disabled = true;
+            locBtn.textContent = 'Locating...';
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                customerLat = pos.coords.latitude;
+                customerLng = pos.coords.longitude;
+                const latlng = L.latLng(customerLat, customerLng);
+                if (window.heMarker) {
+                  window.heMarker.setLatLng(latlng);
+                } else {
+                  window.heMarker = L.marker(latlng).addTo(window.heMap);
+                }
+                window.heMap.setView(latlng, 13);
+                pickNearestPharmacy();
+                updateTotals();
+                updatePlaceOrderEnabled();
+                locBtn.disabled = false;
+                locBtn.textContent = 'Gebruik mijn exacte locatie';
+              },
+              (err) => {
+                console.error(err);
+                alert('Kon locatie niet bepalen. Controleer browser-permissies.');
+                locBtn.disabled = false;
+                locBtn.textContent = 'Gebruik mijn exacte locatie';
+              },
+              { enableHighAccuracy: true, timeout: 10000 }
+            );
+          });
+        }
+
         updatePlaceOrderEnabled();
       });
     </script>

@@ -1,82 +1,98 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-async function main() {
-  console.log('Start seeding...');
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  // Producten toevoegen (gebaseerd op 'Everyday Must-Haves' en 'Shop by Category')
-  const products = [
-    {
-      name: 'Paracetamol 500mg',
-      description: 'Pijnstiller en koortsverlagend middel.',
-      price: 25.00,
-      category: 'Medications',
-      subCategory: 'Morning Essentials',
-      imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=200'
-    },
-    {
-      name: 'Vitamin C Complex',
-      description: 'Ondersteunt het immuunsysteem.',
-      price: 120.00,
-      category: 'Health & Wellness',
-      subCategory: 'Morning Essentials',
-      imageUrl: 'https://images.unsplash.com/photo-1616671276441-2f2c277b8bf4?q=80&w=200'
-    },
-    {
-      name: 'First Aid Kit',
-      description: 'Complete set voor noodsituaties.',
-      price: 350.00,
-      category: 'First Aid',
-      subCategory: 'On-the-go',
-      imageUrl: 'https://images.unsplash.com/photo-1603398938378-e54eab446dde?q=80&w=200'
-    }
+async function main() {
+  console.log('Start seeding full dataset...');
+
+  // Define categories (up to 20 for the shop grid)
+  const categories = [
+    'Vitamins',
+    'First Aid',
+    'Skincare',
+    'Diabetes',
+    'Pain Relief',
+    'Maternal',
+    'Cold & Flu',
+    'Digestive',
+    'Allergy',
+    'Oral Care',
+    'Children',
+    'Supplements'
   ];
 
-  for (const p of products) {
-    await prisma.product.create({ data: p });
+  // Create 20 products per category (realistic test data)
+  for (const cat of categories) {
+    for (let i = 1; i <= 20; i++) {
+      const name = `${cat} Product ${i}`;
+      const price = randInt(40, 400) + (Math.random() < 0.5 ? 0.0 : 0.5);
+      await prisma.product.create({
+        data: {
+          name,
+          description: `Beschrijving voor ${name}. Geschikt voor ${cat.toLowerCase()}.`,
+          price: price,
+          category: cat,
+          subCategory: ['Morning Essentials','On-the-go','Night Care','Travel Kit','Office Care','Sports'][i % 6],
+          imageUrl: `https://picsum.photos/seed/${encodeURIComponent(name)}/300/200`
+        }
+      });
+    }
   }
 
-  // Basis apotheken (multi-vendor)
-  const centralPharmacy = await prisma.pharmacy.create({
-    data: {
+  // Create pharmacies in Paramaribo, Wanica, Nickerie
+  const pharmaciesData = [
+    {
       name: 'Central Pharmacy',
       address: 'Waterkant 1, Paramaribo',
       lat: 5.825,
       lng: -55.167,
-      email: 'pharmacy@healtease.test',
-      // LET OP: in productie altijd hashen!
+      email: 'central@healtease.test',
+      password: 'pharmacy123'
+    },
+    {
+      name: 'Wanica Health',
+      address: 'Hoofdstraat 5, Lelydorp',
+      lat: 5.713,
+      lng: -55.204,
+      email: 'wanica@healtease.test',
+      password: 'pharmacy123'
+    },
+    {
+      name: 'Nickerie Pharmacy',
+      address: 'Keizerstraat 12, Nieuw Nickerie',
+      lat: 5.966,
+      lng: -57.040,
+      email: 'nickerie@healtease.test',
       password: 'pharmacy123'
     }
-  });
+  ];
 
-  const northPharmacy = await prisma.pharmacy.create({
-    data: {
-      name: 'Northside Pharmacy',
-      address: 'Anamoestraat 10, Paramaribo-Noord',
-      lat: 5.864,
-      lng: -55.203,
-      email: 'pharmacy2@healtease.test',
-      password: 'pharmacy123'
-    }
-  });
+  const createdPharmacies = [];
+  for (const p of pharmaciesData) {
+    const created = await prisma.pharmacy.upsert({
+      where: { email: p.email },
+      update: {},
+      create: p
+    });
+    createdPharmacies.push(created);
+  }
 
-  // Voorraad voor apotheken (alle producten een start-quantity)
+  // Create stocks: each pharmacy gets inventory for each product
   const allProducts = await prisma.product.findMany();
   for (const product of allProducts) {
-    await prisma.stock.createMany({
-      data: [
-        {
-          pharmacyId: centralPharmacy.id,
+    for (const ph of createdPharmacies) {
+      const qty = randInt(10, 60);
+      await prisma.stock.create({
+        data: {
+          pharmacyId: ph.id,
           productId: product.id,
-          quantity: 25
-        },
-        {
-          pharmacyId: northPharmacy.id,
-          productId: product.id,
-          quantity: 15
+          quantity: qty
         }
-      ]
-    });
+      });
+    }
   }
 
   // Admin + pharmacy users
@@ -89,7 +105,7 @@ async function main() {
         role: 'ADMIN'
       },
       {
-        email: 'pharmacy@healtease.test',
+        email: 'central@healtease.test',
         password: 'pharmacy123',
         name: 'Central Pharmacy User',
         role: 'PHARMACY'
@@ -97,8 +113,21 @@ async function main() {
     ],
     skipDuplicates: true
   });
+  
+  // Add a default regular user for testing
+  await prisma.user.createMany({
+    data: [
+      {
+        email: 'user@healtease.test',
+        password: 'user123',
+        name: 'Test User',
+        role: 'CUSTOMER'
+      }
+    ],
+    skipDuplicates: true
+  });
 
-  // Een paar test reviews (Testimonials)
+  // A few sample reviews
   await prisma.review.createMany({
     data: [
       { author: 'Sophie V.', comment: 'Super snelle levering van mijn medicijnen!', rating: 5 },
@@ -106,7 +135,7 @@ async function main() {
     ]
   });
 
-  console.log('Seeding klaar!');
+  console.log('Seeding finished.');
 }
 
 main()

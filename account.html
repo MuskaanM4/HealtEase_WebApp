@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HealthEase - My Account</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    />
+    <style>
+      body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background:#f4f7f7 }
+      .he-header { background: #c1e3df; padding:1rem 1.5rem }
+      .he-logo { color: #0c3b5d; font-weight:700 }
+      .card-list { max-width:1100px; margin:1.5rem auto }
+    </style>
+  </head>
+  <body>
+    <header class="he-header">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a href="index.html" class="text-decoration-none d-flex align-items-center gap-2">
+          <div style="width:40px;height:40px;background:#0c3b5d;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">H</div>
+          <span class="he-logo">HealthEase</span>
+        </a>
+        <div>
+          <button id="logoutBtn" class="btn btn-sm btn-outline-dark">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="card-list container">
+      <h2 class="mb-3">My Account</h2>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="card mb-3 p-3">
+            <h5 class="mb-2">Address Book</h5>
+            <form id="addressForm" class="mb-2">
+              <div class="mb-2">
+                <input type="text" name="label" class="form-control" placeholder="Label (Home, Work)" required />
+              </div>
+              <div class="mb-2">
+                <input type="text" name="address" class="form-control" placeholder="Full address" required />
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-primary">Add Address</button>
+                <button id="clearAddresses" type="button" class="btn btn-sm btn-outline-secondary">Clear</button>
+              </div>
+            </form>
+            <div id="addressList"></div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <h5 class="mb-2">My Orders</h5>
+          <p class="text-muted">Previous orders placed with HealthEase.</p>
+          <div id="ordersList" class="mt-2"></div>
+        </div>
+      </div>
+
+      <!-- Order detail modal -->
+      <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Order details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="orderDetailBody"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // ensure user logged in
+      const user = JSON.parse(localStorage.getItem('he_user') || 'null');
+      if (!user || !user.id) {
+        window.location.href = 'login.html?returnTo=account.html';
+      }
+
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('he_user');
+        window.location.href = 'index.html';
+      });
+
+      function getAuthHeaders() {
+        const token = localStorage.getItem('he_token');
+        return token ? { Authorization: 'Bearer ' + token } : {};
+      }
+
+      async function loadOrders() {
+        try {
+          const res = await fetch(`http://localhost:4000/api/users/${user.id}/orders`, { headers: getAuthHeaders() });
+          if (!res.ok) throw new Error('Failed to load orders');
+          const list = await res.json();
+          const wrap = document.getElementById('ordersList');
+          wrap.innerHTML = '';
+          if (!list.length) {
+            wrap.innerHTML = '<p class="text-muted">No previous orders found.</p>';
+            return;
+          }
+          list.forEach(o => {
+            const el = document.createElement('div');
+            el.className = 'card mb-3';
+            el.innerHTML = `
+              <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-bold">Order #${o.id}</div>
+                  <div class="small text-muted">Placed: ${new Date(o.createdAt).toLocaleString()}</div>
+                  <div class="mt-2">Total: SRD ${Number(o.totalAmount).toFixed(2)}</div>
+                </div>
+                <div class="text-end">
+                  <div class="small">Status: ${o.status || 'N/A'}</div>
+                  <div class="small">Pharmacy: ${o.pharmacy ? o.pharmacy.name : 'N/A'}</div>
+                  <div class="mt-2"><button class="btn btn-sm btn-outline-primary view-order" data-id="${o.id}">View details</button></div>
+                </div>
+              </div>
+            `;
+            wrap.appendChild(el);
+          });
+          // attach detail handlers
+          document.querySelectorAll('.view-order').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+              const id = e.target.getAttribute('data-id');
+              const res = await fetch(`http://localhost:4000/api/orders/${id}`, { headers: getAuthHeaders() });
+              let order;
+              if (res.ok) order = await res.json();
+              const body = document.getElementById('orderDetailBody');
+              body.innerHTML = order ? `
+                <div><strong>Order #${order.id}</strong></div>
+                <div class="small text-muted">Placed: ${new Date(order.createdAt).toLocaleString()}</div>
+                <div class="mt-2"><strong>Status: </strong>${order.status || 'N/A'}</div>
+                <div class="mt-2"><strong>Delivery:</strong> ${order.deliveryMethod}</div>
+                <div class="mt-2"><strong>Pharmacy:</strong> ${order.pharmacy ? order.pharmacy.name : 'N/A'}</div>
+                <div class="mt-2"><strong>Prescription:</strong> <a href="/${order.prescriptionPath}" target="_blank">View</a></div>
+                <div class="mt-2"><strong>ID Card:</strong> <a href="/${order.idCardPath}" target="_blank">View</a></div>
+              ` : '<p class="text-muted">Could not load order details.</p>';
+              const modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+              modal.show();
+            });
+          });
+        } catch (err) {
+          console.error(err);
+          document.getElementById('ordersList').innerHTML = '<p class="text-danger">Could not load orders.</p>';
+        }
+      }
+
+      loadOrders();
+      // Address book functions (client-side storage)
+      function loadAddresses() {
+        const list = JSON.parse(localStorage.getItem('he_addresses') || '[]');
+        const wrap = document.getElementById('addressList');
+        wrap.innerHTML = '';
+        if (!list.length) return (wrap.innerHTML = '<p class="small text-muted">No saved addresses.</p>');
+        list.forEach((a, i) => {
+          const el = document.createElement('div');
+          el.className = 'd-flex justify-content-between align-items-center mb-2';
+          el.innerHTML = `<div><div class="fw-semibold">${a.label}</div><div class="small text-muted">${a.address}</div></div><div><button class="btn btn-sm btn-outline-danger btn-del" data-i="${i}">Delete</button></div>`;
+          wrap.appendChild(el);
+        });
+        document.querySelectorAll('.btn-del').forEach(b => b.addEventListener('click', (e) => {
+          const i = Number(e.target.getAttribute('data-i'));
+          const arr = JSON.parse(localStorage.getItem('he_addresses') || '[]');
+          arr.splice(i,1);
+          localStorage.setItem('he_addresses', JSON.stringify(arr));
+          loadAddresses();
+        }));
+      }
+
+      document.getElementById('addressForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const label = form.label.value.trim();
+        const address = form.address.value.trim();
+        if (!label || !address) return;
+        const arr = JSON.parse(localStorage.getItem('he_addresses') || '[]');
+        arr.push({ label, address });
+        localStorage.setItem('he_addresses', JSON.stringify(arr));
+        form.reset();
+        loadAddresses();
+      });
+
+      document.getElementById('clearAddresses').addEventListener('click', () => {
+        localStorage.removeItem('he_addresses');
+        loadAddresses();
+      });
+
+      loadAddresses();
+    </script>
+    <script src="shared/navbar.js"></script>
+  </body>
+</html>

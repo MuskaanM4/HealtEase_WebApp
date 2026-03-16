@@ -224,13 +224,14 @@
       </div>
       <div class="offcanvas-body d-flex flex-column gap-2">
         <a href="index.html" class="btn btn-link text-start">Home</a>
-        <a href="shop.html" class="btn btn-link text-start">Shop</a>
         <a href="checkout.html" class="btn btn-link text-start">Cart / Checkout</a>
+        <a href="shop.html" class="btn btn-link text-start">Shop</a>
         <a href="essentials.html" class="btn btn-link text-start">Everyday Essentials</a>
         <a href="testimonials.html" class="btn btn-link text-start">Testimonials</a>
         <a href="faq.html" class="btn btn-link text-start">FAQ</a>
-        <a href="contact.html" class="btn btn-link text-start">Contact</a>
+        <a href="contact.html" class="btn btn-link text-start">Contact Us</a>
         <a href="login.html" class="btn btn-link text-start">Login / Signup</a>
+        <a href="account.html" class="btn btn-link text-start">My Account</a>
       </div>
     </div>
 
@@ -249,8 +250,8 @@
               Your one-stop pharmacy. Shop smart, live well, feel better.
             </p>
             <div class="d-flex gap-3 flex-wrap">
-              <button class="he-primary-btn">Locations</button>
-              <button class="he-secondary-btn">Shop Now</button>
+              <button class="he-primary-btn" data-bs-toggle="modal" data-bs-target="#locationsModal">Locations</button>
+              <button class="he-secondary-btn" onclick="window.location.href='shop.html'">Shop Now</button>
             </div>
           </div>
           <div class="col-md-5 mt-4 mt-md-0 text-center">
@@ -258,7 +259,7 @@
               class="rounded-4 p-4"
               style="
                 background-color: #e7f4f2;
-                min-height: 260px;
+                min-height: 200px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -269,18 +270,13 @@
               <div
                 class="rounded-circle d-flex align-items-center justify-content-center mb-3"
                 style="
-                  width: 96px;
-                  height: 96px;
+                  width: 160px;
+                  height: 160px;
                   background-color: #c1e3df;
                 "
               >
-                <i class="bi bi-file-medical-fill" style="font-size: 2.5rem;"></i>
+                <img src="/images/homepage_healthcare.png" alt="Pharmacy" style="width:130px; height:110px; object-fit:contain;">
               </div>
-              <h5 class="fw-bold mb-1">Safe & Smart Pharmacy</h5>
-              <p class="mb-0" style="font-size: 0.9rem;">
-                Order medicines, track availability and pick up at your
-                favourite drugstore.
-              </p>
             </div>
           </div>
         </div>
@@ -290,70 +286,126 @@
     <!-- Everyday Must-Haves -->
     <section class="py-4">
       <div class="container">
-        <h2 class="he-section-title">Everyday Must-Haves</h2>
-        <p class="he-section-subtitle">
-          Essentials you can't live without – loaded live from our database.
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="he-section-title" style="text-align:left;">Everyday Must-Haves</h2>
+          <div class="text-end d-none d-md-block"><a href="essentials.html" class="text-decoration-none">View All <span class="bi bi-arrow-right"></span></a></div>
+        </div>
+        <p class="he-section-subtitle" style="text-align:left;">
+          Essentials you can't live without.
         </p>
 
-        <div id="mustHaveProducts" class="row g-3"></div>
+        <div id="mustHaveProducts" class="row g-3">
+          <div class="col-6 col-md-3">
+            <div class="he-product-card" style="border-radius:18px;">
+              <img src="/images/first_aid_basics.png" alt="First Aid" />
+              <div class="he-product-name mt-2">First Aid Basics</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="he-product-card" style="border-radius:18px;">
+              <img src="/images/allergy.png" alt="Allergy" />
+              <div class="he-product-name mt-2">Allergy</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="he-product-card" style="border-radius:18px;">
+              <img src="/images/immune_support.png" alt="Immune Support" />
+              <div class="he-product-name mt-2">Immune Support</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="he-product-card" style="border-radius:18px;">
+              <img src="/images/pain_and_fever_relief.png" alt="Pain & Fever" />
+              <div class="he-product-name mt-2">Pain &amp; Fever Relief</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Category highlight cards -->
     <section class="py-4">
       <div class="container">
-        <h2 class="he-section-title">Shop by Category</h2>
-        <p class="he-section-subtitle">
-          Browse by category and find exactly what you're looking for.
-        </p>
-        <div class="row g-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="he-section-title" style="text-align:left;">Shop by Category</h2>
+            <p class="he-section-subtitle" style="text-align:left;">Browse by category and find exactly what you're looking for.</p>
+          </div>
+          <div class="text-end d-none d-md-block"><a href="shop.html" class="text-decoration-none">View Category <span class="bi bi-arrow-right"></span></a></div>
+        </div>
+
+        <div class="row g-3 mt-2">
           <div class="col-6 col-md-3">
-            <div class="he-product-card">
-              <div class="he-product-name mb-2">Maternal wellness &amp; Care</div>
-              <button
-                class="btn btn-sm btn-outline-primary"
-                onclick="window.location.href='shop.html'"
-              >
-                Shop Now
-              </button>
+            <div class="he-product-card" style="cursor:pointer;" onclick="window.location.href='shop.html?category=Personal%20care'">
+              <img src="/images/personal_care.png" alt="Personal care" />
+              <div class="he-product-name mb-2">Personal care</div>
             </div>
           </div>
           <div class="col-6 col-md-3">
-            <div class="he-product-card">
-              <div class="he-product-name mb-2">Migraine &amp; head pain relief</div>
-              <button
-                class="btn btn-sm btn-outline-primary"
-                onclick="window.location.href='shop.html'"
-              >
-                Shop Now
-              </button>
+            <div class="he-product-card" style="cursor:pointer;" onclick="window.location.href='shop.html?category=Diabetic%20Care'">
+              <img src="/images/diabetic_care.png" alt="Diabetic Care" />
+              <div class="he-product-name mb-2">Diabetic Care</div>
             </div>
           </div>
           <div class="col-6 col-md-3">
-            <div class="he-product-card">
-              <div class="he-product-name mb-2">Immune Support</div>
-              <button
-                class="btn btn-sm btn-outline-primary"
-                onclick="window.location.href='shop.html'"
-              >
-                Shop Now
-              </button>
+            <div class="he-product-card" style="cursor:pointer;" onclick="window.location.href='shop.html?category=Supplements'">
+              <img src="/images/supplements.png" alt="Supplements" />
+              <div class="he-product-name mb-2">Supplements</div>
             </div>
           </div>
           <div class="col-6 col-md-3">
-            <div class="he-product-card">
-              <div class="he-product-name mb-2">Pain &amp; Fever Relief</div>
-              <button
-                class="btn btn-sm btn-outline-primary"
-                onclick="window.location.href='shop.html'"
-              >
-                Shop Now
-              </button>
+            <div class="he-product-card" style="cursor:pointer;" onclick="window.location.href='shop.html?category=Devices'">
+              <img src="/images/medical_devices.png" alt="Devices" />
+              <div class="he-product-name mb-2">Devices</div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- Locations Modal -->
+    <div class="modal fade" id="locationsModal" tabindex="-1" aria-labelledby="locationsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="locationsModalLabel">Apotheken in Suriname</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="text-muted">Lijst met voorbeelden (Paramaribo, Wanica, Nickerie)</p>
+            <div class="list-group">
+              <div class="list-group-item">
+                <div class="fw-bold">Central Pharmacy - Paramaribo</div>
+                <div class="small">Waterkant 1, Paramaribo</div>
+                <div class="small">Tel: +597 123-4567</div>
+                <div class="small">Openingstijden: Ma-Za 08:00 - 20:00</div>
+              </div>
+              <div class="list-group-item">
+                <div class="fw-bold">Northside Pharmacy - Paramaribo Noord</div>
+                <div class="small">Anamoestraat 10, Paramaribo-Noord</div>
+                <div class="small">Tel: +597 234-5678</div>
+                <div class="small">Openingstijden: Ma-Za 09:00 - 18:00</div>
+              </div>
+              <div class="list-group-item">
+                <div class="fw-bold">Wanica Health - Lelydorp</div>
+                <div class="small">Hoofdstraat 5, Lelydorp</div>
+                <div class="small">Tel: +597 345-6789</div>
+                <div class="small">Openingstijden: Ma-Za 08:00 - 19:00</div>
+              </div>
+              <div class="list-group-item">
+                <div class="fw-bold">Nickerie Pharmacy - Nieuw Nickerie</div>
+                <div class="small">Keizerstraat 12, Nieuw Nickerie</div>
+                <div class="small">Tel: +597 456-7890</div>
+                <div class="small">Openingstijden: Ma-Za 08:00 - 17:00</div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer class="he-footer">
       <div class="container">
@@ -416,56 +468,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
+    <script src="shared/navbar.js"></script>
     <script>
-      async function loadMustHaves() {
-        try {
-          const res = await fetch('http://localhost:4000/api/products');
-          const allProducts = await res.json();
-
-          const mustHaves = allProducts.filter(
-            (p) =>
-              p.subCategory === 'Morning Essentials' ||
-              p.subCategory === 'On-the-go' ||
-              p.subCategory === 'Night Care'
-          );
-
-          const container = document.getElementById('mustHaveProducts');
-          container.innerHTML = '';
-
-          if (!mustHaves.length) {
-            container.innerHTML =
-              '<p class="text-center text-muted">No Everyday Must-Haves found in the database.</p>';
-            return;
-          }
-
-          mustHaves.forEach((product) => {
-            const col = document.createElement('div');
-            col.className = 'col-6 col-md-3';
-            col.innerHTML = `
-              <div class="he-product-card">
-                ${
-                  product.imageUrl
-                    ? `<img src="${product.imageUrl}" alt="${product.name}" />`
-                    : ''
-                }
-                <div class="he-product-name">${product.name}</div>
-                <div class="he-product-price">SRD ${Number(
-                  product.price
-                ).toFixed(2)}</div>
-                <button class="btn btn-sm btn-outline-primary mt-2 add-to-cart-btn">Add to cart</button>
-              </div>
-            `;
-            container.appendChild(col);
-
-            const btn = col.querySelector('.add-to-cart-btn');
-            btn.addEventListener('click', () => addToCart(product));
-          });
-        } catch (err) {
-          console.error('Failed to load products', err);
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', loadMustHaves);
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof updateCartBadge === 'function') updateCartBadge();
+      });
     </script>
   </body>
   </html>
