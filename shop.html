@@ -17,89 +17,148 @@
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
           sans-serif;
         background-color: #f4f7f7;
+        color: #0c3b5d;
       }
 
       /* Sectie titels */
       .he-section-title {
         text-align: center;
-        margin-top: 2rem;
+        margin-top: 2.5rem;
         margin-bottom: 0.5rem;
         color: #0c3b5d;
-        font-weight: 700;
+        font-weight: 800;
+        font-size: 2.5rem;
       }
 
       .he-section-subtitle {
         text-align: center;
         color: #6c7a7a;
-        margin-bottom: 1.5rem;
+        margin-bottom: 2.5rem;
+        font-size: 1.1rem;
       }
 
       /* PRODUCT CARD STYLING & ANIMATIE */
       .he-product-card {
         background-color: #ffffff;
-        border-radius: 18px;
-        padding: 1rem;
+        border-radius: 22px;
+        padding: 1.5rem;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Beweging toevoegen */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(12, 59, 93, 0.05);
       }
 
       .he-product-card:hover {
-        transform: translateY(-8px); /* Omhoog bewegen bij hover */
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(12, 59, 93, 0.12);
+        border-color: #c1e3df;
       }
 
       .he-product-card img {
         max-width: 100%;
-        height: 110px;
-        object-fit: cover;
-        border-radius: 12px;
-        margin-bottom: 0.75rem;
+        height: 140px;
+        object-fit: contain;
+        border-radius: 15px;
+        margin-bottom: 1rem;
       }
 
       /* CATEGORY CARD STYLING & ANIMATIE */
       .category-card {
         background: transparent;
-        box-shadow: none;
         padding: 0.5rem;
-        border-radius: 12px;
         transition: transform 0.3s ease;
       }
 
       .category-card:hover {
-        transform: scale(1.03); /* Licht uitvergroten bij hover */
+        transform: scale(1.05);
       }
 
       .category-box {
         background-color: #e7f4f2;
-        border-radius: 14px;
-        height: 160px;
+        border-radius: 20px;
+        height: 180px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.8rem;
         overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
       }
 
       .category-box img {
-        max-height: 120px;
+        max-height: 130px;
         width: auto;
         object-fit: contain;
         transition: transform 0.5s ease;
       }
 
       .category-card:hover .category-box img {
-        transform: scale(1.1); /* Afbeelding in de box zoomt in */
+        transform: scale(1.15);
       }
 
-      /* Grotere kaarten in categorie overzicht */
-      .product-large .he-product-card {
-        padding: 1.25rem;
+      /* MODERNE FOOTER STYLING */
+      .he-footer {
+        background-color: #c1e3df;
+        padding: 4rem 1.5rem 2rem;
+        margin-top: 5rem;
+        color: #0c3b5d;
+        border-top: 1px solid rgba(12, 59, 93, 0.1);
       }
 
-      .product-large .he-product-card img {
-        height: 200px;
-        border-radius: 12px;
+      .footer-brand {
+        font-weight: 800;
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .footer-links h6 {
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1.2px;
+      }
+
+      .footer-links ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-links ul li {
+        margin-bottom: 0.9rem;
+      }
+
+      .footer-links ul li a {
+        color: #4a5a5a;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .footer-links ul li a:hover {
+        color: #0077c2;
+        padding-left: 5px;
+      }
+
+      .social-icons a {
+        font-size: 1.6rem;
+        color: #0c3b5d;
+        margin-right: 1.2rem;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .social-icons a:hover {
+        transform: translateY(-4px) rotate(8deg);
+        color: #0077c2;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(12, 59, 93, 0.1);
+        padding-top: 2rem;
+        margin-top: 3.5rem;
       }
     </style>
   </head>
@@ -110,49 +169,47 @@
     <main class="container py-4">
       <h2 class="he-section-title">Shop by Category</h2>
       <p class="he-section-subtitle">
-        Browse by category and find exactly what you need.
+        Vind precies wat je nodig hebt in ons uitgebreide assortiment.
       </p>
 
-      <div id="categoriesGrid" class="row g-3 mb-4"></div>
+      <div id="categoriesGrid" class="row g-4 mb-4"></div>
 
-      <div id="categoryViewHeader" class="d-flex justify-content-between align-items-center mb-4" style="display:none">
+      <div id="categoryViewHeader" class="d-flex justify-content-between align-items-center mb-5" style="display:none">
         <div id="categoryViewLeft"></div>
         <div>
-          <h4 id="categoryViewTitle" class="mb-0 fw-bold" style="color:#0c3b5d;"></h4>
+          <h2 id="categoryViewTitle" class="mb-0 fw-bold" style="color:#0c3b5d;"></h2>
         </div>
-        <div style="width: 80px;"></div> </div>
+        <div style="width: 80px;"></div> 
+      </div>
 
       <div id="productGrid" class="row g-4"></div>
     </main>
 
     <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="productModalLabel">Product</h5>
+        <div class="modal-content" style="border-radius: 25px; border: none; overflow: hidden;">
+          <div class="modal-header border-0 pb-0">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-5" id="modalImageWrap"></div>
+          <div class="modal-body p-4 p-md-5">
+            <div class="row align-items-center">
+              <div class="col-md-5 mb-4 mb-md-0" id="modalImageWrap"></div>
               <div class="col-md-7">
-                <h5 id="modalProductName" class="fw-bold"></h5>
-                <p id="modalProductCategory" class="text-muted small"></p>
-                <p id="modalProductDescription"></p>
-                <div class="fs-4 fw-bold text-primary" id="modalProductPrice"></div>
+                <span id="modalProductCategory" class="badge bg-light text-primary mb-2 px-3 py-2 rounded-pill"></span>
+                <h3 id="modalProductName" class="fw-bold mb-3" style="color: #0c3b5d;"></h3>
+                <p id="modalProductDescription" class="text-muted mb-4" style="line-height: 1.6;"></p>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="fs-2 fw-bold text-primary" id="modalProductPrice"></div>
+                  <button type="button" class="btn btn-primary rounded-pill px-5 py-2 fw-bold" id="modalAddToCart">Add to cart</button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary rounded-pill px-4" id="modalAddToCart">Add to cart</button>
           </div>
         </div>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script src="shared/load-navbar.js"></script>
     <script src="app.js"></script>
 
@@ -174,18 +231,16 @@
 
       let allProducts = [];
 
-      // Render Categorieën
       function renderCategories() {
         const grid = document.getElementById('categoriesGrid');
         grid.innerHTML = '';
         
-        // 'All' card
         const allCol = document.createElement('div');
         allCol.className = 'col-6 col-md-3';
         allCol.innerHTML = `
           <div class="category-card" style="cursor:pointer;">
-            <div class="category-box"><img src='https://picsum.photos/seed/all/300/200' alt='All' /></div>
-            <div class="he-product-name text-center fw-bold">All categories</div>
+            <div class="category-box"><img src='/images/shop_all_cat.png' alt='All' /></div>
+            <div class="text-center fw-bold">All categories</div>
           </div>`;
         allCol.addEventListener('click', () => showProductsFor('All categories', allProducts));
         grid.appendChild(allCol);
@@ -196,7 +251,7 @@
           col.innerHTML = `
             <div class="category-card" style="cursor:pointer;">
               <div class="category-box"><img src='https://picsum.photos/seed/${encodeURIComponent(c.name)}/300/200' alt='${c.name}' /></div>
-              <div class="he-product-name text-center fw-bold">${c.name}</div>
+              <div class="text-center fw-bold">${c.name}</div>
             </div>`;
           col.addEventListener('click', () => {
             const filtered = allProducts.filter(p => 
@@ -215,19 +270,15 @@
         document.getElementById('categoryViewTitle').textContent = name;
         
         const left = document.getElementById('categoryViewLeft');
-        left.innerHTML = '<button class="btn btn-sm btn-outline-dark rounded-pill px-3" onclick="showCategories()">&larr; Terug</button>';
+        left.innerHTML = '<button class="btn btn-outline-dark rounded-pill px-4 fw-bold" onclick="showCategories()"><i class="bi bi-arrow-left me-2"></i> Terug</button>';
         
-        const grid = document.getElementById('productGrid');
-        grid.classList.add('product-large');
         renderProducts(list);
       }
 
       function showCategories() {
         document.getElementById('categoriesGrid').style.display = '';
         document.getElementById('categoryViewHeader').style.display = 'none';
-        const grid = document.getElementById('productGrid');
-        grid.innerHTML = '';
-        grid.classList.remove('product-large');
+        document.getElementById('productGrid').innerHTML = '';
       }
 
       async function loadProducts() {
@@ -242,22 +293,22 @@
         const grid = document.getElementById('productGrid');
         grid.innerHTML = '';
         if (!list.length) {
-          grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No products found.</p></div>';
+          grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted fs-5">Geen producten gevonden in deze categorie.</p></div>';
           return;
         }
 
         list.forEach((product) => {
           const col = document.createElement('div');
-          col.className = 'col-12 col-md-4'; 
+          col.className = 'col-12 col-md-4 mb-4'; 
           col.innerHTML = `
             <div class="he-product-card h-100 d-flex flex-column">
-              ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" />` : ''}
-              <div class="fw-bold mt-auto">${product.name}</div>
-              <div class="small text-muted mb-2">${product.category || ''}</div>
-              <div class="fw-bold text-primary fs-5 mb-3">SRD ${Number(product.price).toFixed(2)}</div>
-              <div class="d-grid gap-2">
-                <button class="btn btn-sm btn-primary rounded-pill add-to-cart-btn">Add to cart</button>
-                <button class="btn btn-sm btn-link text-decoration-none more-info-btn" style="color:#0c3b5d;">More Info</button>
+              <img src="${product.imageUrl || 'https://via.placeholder.com/200'}" alt="${product.name}" />
+              <div class="fw-bold mt-2 mb-1 fs-5">${product.name}</div>
+              <div class="small text-muted mb-3">${product.category || 'Overig'}</div>
+              <div class="fw-bold text-primary fs-4 mb-3">SRD ${Number(product.price).toFixed(2)}</div>
+              <div class="mt-auto d-grid gap-2">
+                <button class="btn btn-primary rounded-pill py-2 add-to-cart-btn fw-bold">Add to cart</button>
+                <button class="btn btn-link text-decoration-none more-info-btn fw-semibold" style="color:#0c3b5d;">Bekijk details</button>
               </div>
             </div>
           `;
@@ -267,17 +318,20 @@
         });
       }
 
-      // Modal logica
       function openProductModal(product) {
         document.getElementById('modalProductName').textContent = product.name;
         document.getElementById('modalProductCategory').textContent = product.category;
-        document.getElementById('modalProductDescription').textContent = product.description;
+        document.getElementById('modalProductDescription').textContent = product.description || 'Geen beschrijving beschikbaar.';
         document.getElementById('modalProductPrice').textContent = 'SRD ' + Number(product.price).toFixed(2);
-        document.getElementById('modalImageWrap').innerHTML = `<img src="${product.imageUrl}" class="img-fluid rounded-3" />`;
+        document.getElementById('modalImageWrap').innerHTML = `<img src="${product.imageUrl}" class="img-fluid rounded-4 shadow-sm" />`;
         new bootstrap.Modal(document.getElementById('productModal')).show();
       }
 
       window.onload = loadProducts;
     </script>
+    <div id="footer-container"></div>
+
+<script src="shared/load-navbar.js"></script>
+<script src="shared/load-footer.js"></script> <script src="app.js"></script>
   </body>
 </html>

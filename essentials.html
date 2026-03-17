@@ -11,6 +11,7 @@
             --frame-color: #cbe7e2;
             --bg-light: #f4f7f7;
             --text-dark: #0c3b5d;
+            --primary-blue: #0077c2;
         }
 
         body { 
@@ -19,8 +20,8 @@
             color: var(--text-dark); 
         }
 
-        .he-section-title { text-align: center; margin-top: 2rem; font-weight: 700; font-size: 2rem; }
-        .he-section-subtitle { text-align: center; color: #6c7a7a; margin-bottom: 2.5rem; }
+        .he-section-title { text-align: center; margin-top: 3rem; font-weight: 800; font-size: 2.5rem; color: var(--text-dark); }
+        .he-section-subtitle { text-align: center; color: #6c7a7a; margin-bottom: 3rem; font-size: 1.1rem; }
 
         /* CATEGORY CARDS ANIMATIE */
         .category-card-hero { 
@@ -28,67 +29,90 @@
             flex-direction: column; 
             align-items: center; 
             cursor: pointer; 
-            transition: transform 0.3s ease; /* Vloeiende beweging */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         .category-card-hero:hover { 
-            transform: translateY(-10px); /* Iets meer omhoog dan de shop */
+            transform: translateY(-12px);
         }
 
         .ess-frame { 
             width: 100%; 
             height: 380px; 
             border: 6px solid var(--frame-color); 
-            border-radius: 24px; 
+            border-radius: 30px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             background: #ffffff;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: box-shadow 0.3s ease;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(12, 59, 93, 0.05);
+            transition: all 0.3s ease;
         }
 
         .category-card-hero:hover .ess-frame {
-            box-shadow: 0 15px 35px rgba(12, 59, 93, 0.1);
+            box-shadow: 0 20px 40px rgba(12, 59, 93, 0.12);
             border-color: #a8d8d1;
+            background-color: #f9ffff;
         }
 
         .icon-wrap img { 
             max-width: 100%; 
-            max-height: 250px; 
+            max-height: 260px; 
             object-fit: contain; 
             transition: transform 0.5s ease;
         }
 
         .category-card-hero:hover img {
-            transform: scale(1.05); /* Subtiele zoom op de icon */
+            transform: scale(1.08);
         }
 
         .category-label { 
-            margin-top: 18px; 
-            font-size: 20px; 
-            font-weight: 700; 
+            margin-top: 20px; 
+            font-size: 22px; 
+            font-weight: 800; 
             color: var(--text-dark); 
         }
 
         /* PRODUCT CARD ANIMATIE */
         .he-product-card { 
             background-color: #ffffff; 
-            border-radius: 18px; 
-            padding: 1.5rem; 
+            border-radius: 22px; 
+            padding: 1.8rem; 
             text-align: center; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.04); 
             height: 100%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(12, 59, 93, 0.05);
         }
 
         .he-product-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(12, 59, 93, 0.1);
+            border-color: var(--frame-color);
         }
 
-        .he-product-card img { max-width: 100%; height: 180px; object-fit: contain; margin-bottom: 1rem; }
+        .he-product-card img { max-width: 100%; height: 180px; object-fit: contain; margin-bottom: 1.5rem; }
+
+        /* MODERNE FOOTER STYLING */
+        .he-footer {
+            background-color: #c1e3df;
+            padding: 4rem 1.5rem 2rem;
+            margin-top: 5rem;
+            color: #0c3b5d;
+            border-top: 1px solid rgba(12, 59, 93, 0.1);
+        }
+
+        .footer-brand { font-weight: 800; font-size: 1.5rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 12px; }
+        .footer-links h6 { font-weight: 800; margin-bottom: 1.5rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.2px; }
+        .footer-links ul { list-style: none; padding: 0; }
+        .footer-links ul li { margin-bottom: 0.9rem; }
+        .footer-links ul li a { color: #4a5a5a; text-decoration: none; transition: all 0.2s ease; }
+        .footer-links ul li a:hover { color: var(--primary-blue); padding-left: 5px; }
+
+        .social-icons a { font-size: 1.6rem; color: #0c3b5d; margin-right: 1.2rem; transition: all 0.3s ease; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-4px) rotate(8deg); color: var(--primary-blue); }
+        .footer-bottom { border-top: 1px solid rgba(12, 59, 93, 0.1); padding-top: 2rem; margin-top: 3.5rem; }
 
         @media (max-width: 768px) { .ess-frame { height: 280px; } }
     </style>
@@ -99,21 +123,84 @@
 
     <main class="container py-4">
         <h2 class="he-section-title">Everyday Essentials</h2>
-        <p class="he-section-subtitle">Tap a collection to view items.</p>
+        <p class="he-section-subtitle">Kies een collectie om de producten te bekijken.</p>
 
         <div id="categoriesGrid" class="row g-4 mb-5"></div>
 
-        <div id="categoryViewHeader" class="d-flex justify-content-between align-items-center mb-4" style="display:none !important;">
-            <button id="backBtn" class="btn btn-outline-dark rounded-pill px-4">&larr; Terug</button>
-            <h3 id="categoryViewTitle" class="mb-0 fw-bold"></h3>
-            <div style="width: 80px;"></div>
+        <div id="categoryViewHeader" class="d-flex justify-content-between align-items-center mb-5" style="display:none !important;">
+            <button id="backBtn" class="btn btn-outline-dark rounded-pill px-4 fw-bold"><i class="bi bi-arrow-left me-2"></i> Terug</button>
+            <h3 id="categoryViewTitle" class="mb-0 fw-bold" style="color: var(--text-dark);"></h3>
+            <div style="width: 100px;"></div>
         </div>
         
         <div id="productGrid" class="row g-4"></div>
     </main>
 
+    <footer class="he-footer">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4 footer-links mb-4 mb-lg-0">
+            <div class="footer-brand">
+              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px; background-color: #0c3b5d;">
+                <span class="text-white fw-bold">H</span>
+              </div>
+              <span>HealthEase</span>
+            </div>
+            <p class="text-muted pe-lg-5 mb-4">
+              Uw vertrouwde partner voor gezondheid en welzijn in Suriname. Bestel eenvoudig online en laat het thuisbezorgen.
+            </p>
+            <div class="social-icons">
+              <a href="#"><i class="bi bi-facebook"></i></a>
+              <a href="#"><i class="bi bi-instagram"></i></a>
+              <a href="#"><i class="bi bi-whatsapp"></i></a>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-2 footer-links">
+            <h6>Assortiment</h6>
+            <ul>
+              <li><a href="shop.html">Alle Producten</a></li>
+              <li><a href="essentials.html">Essentials</a></li>
+              <li><a href="shop.html?category=Vitamins">Vitaminen</a></li>
+              <li><a href="shop.html?category=First%20Aid">Eerste Hulp</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-lg-2 footer-links">
+            <h6>Service</h6>
+            <ul>
+              <li><a href="faq.html">Veelgestelde Vragen</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="testimonials.html">Reviews</a></li>
+              <li><a href="account.html">Mijn Account</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 footer-links">
+            <h6>Contact Informatie</h6>
+            <ul class="text-muted">
+              <li class="d-flex align-items-start mb-3">
+                <i class="bi bi-geo-alt-fill me-3 text-primary"></i>
+                <span>Waterkant 1, Paramaribo, Suriname</span>
+              </li>
+              <li class="d-flex align-items-center mb-3">
+                <i class="bi bi-telephone-fill me-3 text-primary"></i>
+                <span>+597 123-4567</span>
+              </li>
+              <li class="d-flex align-items-center">
+                <i class="bi bi-envelope-fill me-3 text-primary"></i>
+                <span>support@healthease.sr</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom text-center">
+          <p class="mb-0 small text-muted">&copy; 2026 HealthEase. Alle rechten voorbehouden.</p>
+        </div>
+      </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script src="shared/load-navbar.js"></script>
     <script src="app.js"></script>
 
@@ -175,18 +262,18 @@
             const productGrid = document.getElementById('productGrid');
             
             productGrid.innerHTML = filtered.length ? filtered.map(p => `
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-4 mb-4">
                     <div class="he-product-card h-100 d-flex flex-column">
                         <img src="${p.imageUrl || 'https://placehold.co/200'}" alt="${p.name}">
-                        <h5 class="fw-bold mt-auto">${p.name}</h5>
+                        <h5 class="fw-bold mt-2" style="color: var(--text-dark);">${p.name}</h5>
                         <p class="text-muted small">${p.category}</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="mt-auto d-flex justify-content-between align-items-center pt-3 border-top">
                             <span class="fw-bold text-primary fs-5">SRD ${Number(p.price).toFixed(2)}</span>
-                            <button class="btn btn-dark rounded-pill px-4 btn-sm" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">Add</button>
+                            <button class="btn btn-primary rounded-pill px-4 fw-bold" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">Add</button>
                         </div>
                     </div>
                 </div>
-            `).join('') : '<div class="col-12 text-center py-5"><p class="text-muted">Geen producten gevonden in deze collectie.</p></div>';
+            `).join('') : '<div class="col-12 text-center py-5"><p class="text-muted fs-5">Geen producten gevonden in deze collectie.</p></div>';
         }
 
         document.getElementById('backBtn').onclick = renderCategories;

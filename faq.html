@@ -93,6 +93,95 @@
         border-radius: 25px;
         margin-top: 2rem;
       }
+
+      /* MODERN FOOTER STYLING */
+.he-footer {
+  background-color: #c1e3df;
+  padding: 4rem 1.5rem 2rem;
+  margin-top: 5rem;
+  color: #0c3b5d;
+  border-top: 1px solid rgba(12, 59, 93, 0.1);
+}
+
+.footer-brand {
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-links h6 {
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1.2px;
+  color: #0c3b5d;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li {
+  margin-bottom: 0.9rem;
+}
+
+.footer-links ul li a {
+  color: #4a5a5a;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.footer-links ul li a:hover {
+  color: #0077c2;
+  padding-left: 5px;
+}
+
+.social-icons a {
+  font-size: 1.6rem;
+  color: #0c3b5d;
+  margin-right: 1.2rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.social-icons a:hover {
+  transform: translateY(-4px) rotate(8deg);
+  color: #0077c2;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(12, 59, 93, 0.1);
+  padding-top: 2rem;
+  margin-top: 3.5rem;
+  color: #6c7a7a;
+}
+
+/* Zorg dat iconen in de contactlijst de juiste kleur hebben */
+.footer-links .bi {
+  color: #0077c2;
+}
+
+@media (max-width: 767.98px) {
+  .he-footer {
+    padding-top: 3rem;
+    text-align: center;
+  }
+  
+  .footer-brand {
+    justify-content: center;
+  }
+  
+  .footer-links {
+    margin-bottom: 2rem;
+  }
+}
+
     </style>
   </head>
   <body>
@@ -193,5 +282,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="shared/load-navbar.js"></script>
     <script src="app.js"></script>
+    <script src="shared/load-navbar.js"></script>
+<script src="shared/load-footer.js"></script> <script src="app.js"></script>
   </body>
 </html>
