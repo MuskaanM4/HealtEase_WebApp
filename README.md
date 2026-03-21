@@ -73,10 +73,10 @@ After seeding, your database will contain demo products, pharmacies, stock, user
 
 Create a `.env` file inside the `backend` folder.
 
-You can copy the example file:
+You can copy the .env.example example file:
 
 ```bash
-cp .env
+cp .env.example
 ```
 
 Use values like this:
@@ -88,6 +88,10 @@ PORT=4000
 ```
 
 Replace `root` and `yourpassword` with your own database credentials.
+
+
+Create a `uploads` file inside the `backend` folder.
+This is for the Prescriptions and ID that are uploaded on the app. 
 
 ---
 
