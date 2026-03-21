@@ -128,6 +128,7 @@ After running the seed script, you can log in with:
 - Pharmacy: `central@healtease.test` / `pharmacy123`
 - Customer: `user@healtease.test` / `user123`
 
+To place an order, it's a requirement to log in with the user credentials.
 ---
 
 ## Main features
